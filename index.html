@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Nordis RCA Acceptance Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap">
+<style>
+/* Layout: a sticky control bar, a numbered journey strip (the real quote-to-renewal sequence),
+   then one section per stage holding test cards; each card ends in a verdict tray. */
+:root{
+  --paper:#f7f8f6; --surface:#ffffff; --sunk:#eef0ec;
+  --ink:#16242e; --ink-soft:#4a5a63; --ink-faint:#6f7e85;
+  --rule:#dcdfd9; --rule-strong:#c3c8c0;
+  --accent:#0d5c63; --accent-soft:#e3eeee; --on-accent:#ffffff;
+  --pass:#2f6f4f; --pass-soft:#e3efe7;
+  --stop:#a12d2f; --stop-soft:#f7e4e4;
+  --warn:#94580f; --warn-soft:#f7ecdb;
+  --sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f171c; --surface:#16212a; --sunk:#1c2932;
+  --ink:#e6ebe8; --ink-soft:#a8b5b9; --ink-faint:#7f8e94;
+  --rule:#27343d; --rule-strong:#384853;
+  --accent:#62bcc1; --accent-soft:#15302f; --on-accent:#08191b;
+  --pass:#7cc49c; --pass-soft:#162d22;
+  --stop:#e3888a; --stop-soft:#33191a;
+  --warn:#dba862; --warn-soft:#30250f;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0f171c; --surface:#16212a; --sunk:#1c2932;
+  --ink:#e6ebe8; --ink-soft:#a8b5b9; --ink-faint:#7f8e94;
+  --rule:#27343d; --rule-strong:#384853;
+  --accent:#62bcc1; --accent-soft:#15302f; --on-accent:#08191b;
+  --pass:#7cc49c; --pass-soft:#162d22;
+  --stop:#e3888a; --stop-soft:#33191a;
+  --warn:#dba862; --warn-soft:#30250f;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.58;-webkit-font-smoothing:antialiased}
+.wrap{max-width:940px;margin:0 auto;padding-inline:18px;padding-block:36px 96px}
+h1,h2,h3{font-family:var(--serif);text-wrap:balance;margin:0}
+h1{font-size:clamp(1.9rem,4.6vw,2.6rem);font-weight:700;line-height:1.12;letter-spacing:-.01em}
+h2{font-size:clamp(1.35rem,3vw,1.7rem);font-weight:700;line-height:1.2}
+h3{font-size:1.08rem;font-weight:500;line-height:1.35}
+p{margin:0;max-width:68ch}
+ul,ol{margin:0;padding-left:1.2rem}
+li+li{margin-top:.25rem}
+b{font-weight:600}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint)}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunk);padding:.08em .34em;border-radius:3px;word-break:break-word}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:12px}
+.lede{font-size:1.04rem;color:var(--ink-soft)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 24px;font-family:var(--mono);font-size:.76rem;color:var(--ink-faint)}
+.meta b{color:var(--ink-soft);font-weight:500}
+
+/* control bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--rule);margin-top:26px;padding-block:10px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:6px 11px;font-size:.84rem;cursor:pointer;color:var(--ink-soft)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.bar .lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-right:6px}
+.bar .grp{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.bar .spacer{flex:1 1 0}
+.btn{border:1px solid var(--rule-strong);background:var(--surface);border-radius:6px;padding:6px 12px;font-size:.84rem;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+
+/* progress */
+.progress{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.pcell{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.pcell .n{font-family:var(--serif);font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.pcell .k{font-size:.8rem;color:var(--ink-faint)}
+.pcell.ok .n{color:var(--pass)} .pcell.no .n{color:var(--stop)}
+.meterbar{grid-column:1/-1;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden;display:flex}
+.meterbar i{display:block;height:100%}
+.meterbar .a{background:var(--pass)} .meterbar .r{background:var(--stop)}
+
+/* journey strip */
+.journey{margin-top:28px;overflow-x:auto;padding-bottom:6px}
+.journey ol{list-style:none;padding:0;margin:0;display:flex;gap:0;min-width:760px}
+.journey li{flex:1 1 0;margin:0;position:relative}
+.journey a{display:flex;flex-direction:column;gap:6px;padding:10px 8px 8px;text-decoration:none;color:var(--ink);border-top:3px solid var(--rule-strong)}
+.journey a:hover{border-top-color:var(--accent)}
+.journey .num{font-family:var(--mono);font-size:.7rem;color:var(--ink-faint)}
+.journey .nm{font-size:.84rem;font-weight:600;line-height:1.2}
+.journey .mini{height:4px;background:var(--sunk);border-radius:2px;overflow:hidden;display:flex}
+.journey .mini i{display:block;height:100%}
+.journey .mini .a{background:var(--pass)} .journey .mini .r{background:var(--stop)}
+.journey .cnt{font-family:var(--mono);font-size:.68rem;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.journey li.ops a{border-top-style:dashed}
+
+/* notes */
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;display:flex;flex-direction:column;gap:6px;border-radius:0 6px 6px 0}
+.note.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+.note .t{font-weight:600}
+.banner{margin-top:16px;border:1px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:6px;font-size:.92rem}
+.tscroll{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.9rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+
+/* sections */
+section{margin-top:52px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:70px}
+.shead{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:end;border-top:1px solid var(--rule-strong);padding-top:18px}
+.sno{grid-row:1/3;font-family:var(--serif);font-size:2.6rem;font-weight:700;line-height:.9;color:var(--accent);font-variant-numeric:tabular-nums}
+.shead p{grid-column:2;color:var(--ink-soft);font-size:.95rem}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-family:var(--mono);font-size:.76rem}
+.flow .st{border:1px solid var(--rule-strong);background:var(--surface);padding:3px 9px;border-radius:4px;white-space:nowrap}
+.flow .st.end{border-color:var(--pass);color:var(--pass)} .flow .st.bad{border-color:var(--stop);color:var(--stop)}
+.flow .arr{color:var(--ink-faint)}
+
+/* test card */
+.card{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--rule-strong);border-radius:0 8px 8px 0;display:flex;flex-direction:column}
+.card[data-state="accepted"]{border-left-color:var(--pass)}
+.card[data-state="rejected"]{border-left-color:var(--stop)}
+.cbody{padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.chead{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px}
+.tid{font-family:var(--mono);font-size:.76rem;font-weight:500;background:var(--ink);color:var(--paper);padding:2px 8px;border-radius:3px;letter-spacing:.03em}
+.chead h3{flex:1 1 22ch;min-width:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;border:1px solid var(--rule-strong);color:var(--ink-soft);padding:1px 7px;border-radius:10px;white-space:nowrap}
+.tag.key{border-color:var(--accent);color:var(--accent)}
+.tag.known{border-color:var(--warn);color:var(--warn)}
+.tag.explore{border-style:dashed}
+.runas{font-size:.84rem;color:var(--ink-faint)}
+.runas b{color:var(--ink-soft);font-weight:500}
+dl.steps{display:grid;grid-template-columns:78px 1fr;gap:8px 16px;margin:0}
+dl.steps dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);padding-top:3px}
+dl.steps dd{margin:0;min-width:0}
+.expect,.watch{padding:10px 14px;border-radius:0 6px 6px 0}
+.expect{background:var(--pass-soft);border-left:3px solid var(--pass)}
+.watch{background:var(--warn-soft);border-left:3px solid var(--warn)}
+.expect .l,.watch .l{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:2px}
+.expect .l{color:var(--pass)} .watch .l{color:var(--warn)}
+
+/* verdict tray */
+.tray{border-top:1px solid var(--rule);background:var(--sunk);padding:12px 18px 14px;display:flex;flex-direction:column;gap:10px;border-radius:0 0 8px 0}
+.vrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.vbtn{border:1px solid var(--rule-strong);background:var(--surface);border-radius:6px;padding:7px 14px;font-size:.88rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.vbtn svg{width:14px;height:14px}
+.vbtn.acc[aria-pressed="true"]{background:var(--pass);border-color:var(--pass);color:var(--surface)}
+.vbtn.rej[aria-pressed="true"]{background:var(--stop);border-color:var(--stop);color:var(--surface)}
+.vbtn:disabled{opacity:.5;cursor:not-allowed}
+.rec{flex:0 1 190px;min-width:0;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);border-radius:6px;padding:7px 10px;font:inherit;font-size:.86rem}
+.saved{font-family:var(--mono);font-size:.7rem;color:var(--ink-faint);margin-left:auto}
+textarea.nt{width:100%;min-height:62px;resize:vertical;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);border-radius:6px;padding:8px 10px;font:inherit;font-size:.9rem;line-height:1.45}
+.others{display:flex;flex-direction:column;gap:6px}
+.other{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.86rem;align-items:start}
+.other img{width:22px;height:22px;border-radius:50%;grid-row:1/3}
+.other .who{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.other .who b{font-weight:600}
+.other .ntx{color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
+.pill{font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;padding:1px 7px;border-radius:10px;border:1px solid var(--rule-strong);color:var(--ink-faint)}
+.pill.accepted{border-color:var(--pass);color:var(--pass)} .pill.rejected{border-color:var(--stop);color:var(--stop)}
+.empty{color:var(--ink-faint);font-size:.9rem;font-style:italic}
+.export{display:flex;flex-direction:column;gap:8px}
+.export textarea{width:100%;min-height:180px;font-family:var(--mono);font-size:.78rem;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);border-radius:6px;padding:8px}
+footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:var(--ink-faint);font-size:.85rem}
+@media (max-width:560px){
+  dl.steps{grid-template-columns:1fr;gap:2px 0}
+  dl.steps dt{padding-top:8px}
+  .bar .spacer{display:none}
+  .saved{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.who-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.who-bar input{border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 10px;font:inherit;font-size:.86rem;width:13rem;max-width:100%}
+.name-hint{font-size:.8rem;color:var(--stop)}
+.other .av{width:24px;height:24px;border-radius:50%;grid-row:1/3;background:var(--accent-soft);color:var(--accent);font-family:var(--mono);font-size:.64rem;display:inline-flex;align-items:center;justify-content:center;font-weight:500}
+</style>
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="eyebrow">Revenue Cloud · User acceptance testing · NTFULL sandbox</div>
+    <h1>Nordis RCA acceptance guide</h1>
+    <p class="lede">Everything built so far, from the first quote to the renewal, written as steps you can repeat. Work through the tests for your role. Mark each one <b>Accept</b> or <b>Reject</b>, and add a note either way. Your answers save as you go, and the rest of the team can see them.</p>
+    <div class="meta">
+      <span><b>Environment</b> Nordis_Sandbox (ntfull)</span>
+      <span><b>Scope</b> Gate 2 quoting + Gate 3 approvals, proposal, order, contract, assets</span>
+      <span><b>Prepared</b> 30 Sep 2026</span>
+    </div>
+  </header>
+
+  <div id="dbBanner" class="banner" hidden></div>
+
+  <div class="bar" role="toolbar" aria-label="Filters">
+    <div class="grp"><span class="lbl">Role</span>
+      <div class="seg" id="fPersona">
+        <button type="button" data-v="all" aria-pressed="true">Everyone</button>
+        <button type="button" data-v="sales" aria-pressed="false">Sales</button>
+        <button type="button" data-v="ops" aria-pressed="false">Ops &amp; Admin</button>
+      </div>
+    </div>
+    <div class="grp"><span class="lbl">Show</span>
+      <div class="seg" id="fStatus">
+        <button type="button" data-v="all" aria-pressed="true">All</button>
+        <button type="button" data-v="open" aria-pressed="false">Not tested</button>
+        <button type="button" data-v="rejected" aria-pressed="false">Rejected</button>
+        <button type="button" data-v="accepted" aria-pressed="false">Accepted</button>
+      </div>
+    </div>
+    <span class="spacer"></span>
+    <div class="who-bar"><label class="lbl" for="testerName">Your name</label><input id="testerName" type="text" autocomplete="name" placeholder="First and last name"><span class="name-hint" id="nameHint" hidden>Add your name to save results</span></div>
+    <button type="button" class="btn" id="copyBtn">Copy results</button>
+  </div>
+
+  <div class="progress" id="progress" aria-live="polite">
+    <div class="pcell"><span class="n" id="pTotal">0</span><span class="k">tests in view</span></div>
+    <div class="pcell ok"><span class="n" id="pAcc">0</span><span class="k">accepted</span></div>
+    <div class="pcell no"><span class="n" id="pRej">0</span><span class="k">rejected</span></div>
+    <div class="pcell"><span class="n" id="pOpen">0</span><span class="k">not yet tested</span></div>
+    <div class="meterbar" aria-hidden="true"><i class="a" id="mA"></i><i class="r" id="mR"></i></div>
+  </div>
+
+  <div class="export" id="exportBox" hidden>
+    <p>Copying isn't available in this view. Select the text below and copy it yourself.</p>
+    <textarea id="exportText" readonly aria-label="Results as text"></textarea>
+  </div>
+
+  <nav class="journey" aria-label="Process stages"><ol id="journey"></ol></nav>
+
+  <section id="start">
+    <div class="shead"><span class="sno">0</span><div class="eyebrow">Start here</div><h2>Before you begin</h2></div>
+
+    <div class="tscroll"><table>
+      <thead><tr><th>Log in as</th><th>Salesforce profile</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><b>Sales rep</b></td><td>Nordis Sales User</td><td>All sales tests</td></tr>
+        <tr><td><b>CRO</b></td><td>Nordis Sales User</td><td>First approver on quotes up to 10 points below target</td></tr>
+        <tr><td><b>CFO</b></td><td>Approver user</td><td>Second approver on the 5–10 point band (AP-4)</td></tr>
+        <tr><td><b>COO</b></td><td>Approver user</td><td>Deep-discount quotes and all contract terms</td></tr>
+        <tr><td><b>Legal</b></td><td>Read Only</td><td>Non-standard contract language</td></tr>
+        <tr><td><b>Admin</b></td><td>System Administrator</td><td>Ops &amp; Admin tests only</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="grid2">
+      <div class="note warn"><span class="t">Test as the real person, not as an admin</span><p>Admins see fields and buttons that ordinary users don't. Almost every defect found so far showed up only when testing as a sales rep.</p></div>
+      <div class="note warn"><span class="t">Add products with Browse Catalog</span><p>Use the <b>Browse Catalog</b> action on the quote to add products. It runs Revenue Cloud pricing, so margins and approvals come out right. Don’t use any other way of adding lines.</p></div>
+      <div class="note"><span class="t">Reprice before you generate a proposal</span><p>After configuring a bundle, reprice once before clicking <b>Create Proposal</b>. See DG-5 for why.</p></div>
+      <div class="note"><span class="t">Content now, formatting later</span><p>For the proposal, judge whether the right things appear with the right numbers. Styling is still being refined. Put layout preferences in your notes, but don't reject a test for them alone.</p></div>
+    </div>
+
+    <div class="panel">
+      <h3>How to record a result</h3>
+      <ol>
+        <li>Follow the steps and compare what you see with <b>Expected</b>.</li>
+        <li>Choose <b>Accept</b> if it behaves as described, or <b>Reject</b> if it doesn't.</li>
+        <li>Enter the <b>quote, order or contract number</b> you used. With that and your login, we can trace the problem without asking you to reproduce it.</li>
+        <li>Add a note. For a rejection, say what happened and copy any error message word for word. For an acceptance, anything you'd like changed is still useful.</li>
+      </ol>
+      <p>Enter your name at the top of the page first, so your results are credited to you. Results save automatically to a shared sheet, and everyone's verdicts appear under each test, so two people can run the same test. Tests marked <b>Key test</b> are the ones most likely to expose a real problem, so run them first.</p>
+    </div>
+  </section>
+
+  <div id="stages"></div>
+
+  <section id="known">
+    <div class="shead"><span class="sno">·</span><div class="eyebrow">Expected behaviour</div><h2>Things that look odd but are known</h2></div>
+    <div class="grid2">
+      <div class="note"><span class="t">Submit and Recall always show on quotes</span><p>Both buttons appear whatever the quote’s status. Hiding them by status is still to do. A second submission is still blocked with a message (AP-9).</p></div>
+      <div class="note"><span class="t">Several emails per approval</span><p>Submitters are emailed at submission, decision and outcome. Tell us if that's too many.</p></div>
+      <div class="note"><span class="t">Contract outcome emails omit comments</span><p>The email back to the submitter is the standard Salesforce one. Approver comments are always on the contract in <b>Approval Comments</b>.</p></div>
+      <div class="note"><span class="t">Approved records lock</span><p>Approval locks the record to protect the agreed pricing and terms. Admins can unlock it if needed.</p></div>
+      <div class="note"><span class="t">Leave Tax and Shipping blank</span><p>Postage is priced on the lines. Typing a value into the quote’s Tax or Shipping &amp; Handling field counts it twice in the grand total.</p></div>
+      <div class="note"><span class="t">Proposal limit in the sandbox</span><p>The sandbox allows 50 document generations an hour across all users. Anything over that comes back as <em>Blocked</em>. Wait a while and try again.</p></div>
+      <div class="note"><span class="t">No automatic pull-back on contracts</span><p>Ticking a risk box after a contract is approved doesn't send it back for approval. The record lock is what prevents that change. Quotes do pull back (AP-8).</p></div>
+    </div>
+  </section>
+
+  <footer>Nordis Technologies · Revenue Cloud implementation · Prepared by SaaScend for sandbox acceptance testing. Quote the test ID (for example CF-3) whenever you report something outside this page.</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var STAGES = [
+  {id:"quote",   no:1, name:"Start a quote",          blurb:"Create a quote from an opportunity without disturbing the one already synced."},
+  {id:"config",  no:2, name:"Build the program",      blurb:"Add a program with Browse Catalog, then configure its packages, postage and add-ons."},
+  {id:"price",   no:3, name:"Price and discount",     blurb:"Check the margin summary, then apply header discounts and confirm floors and non-discountable lines hold."},
+  {id:"approve", no:4, name:"Quote approval",         blurb:"Approval routing follows margin variance, in percentage points below the target margin set by the catalog."},
+  {id:"propose", no:5, name:"Proposal document",      blurb:"Generate the customer proposal from the quote and check what it shows."},
+  {id:"order",   no:6, name:"Order",                  blurb:"Turn an approved quote into an order and activate it to create assets."},
+  {id:"contract",no:7, name:"Contract and terms",     blurb:"Contracts are created from the order only. Their approval depends on two risk checkboxes, not on margin."},
+  {id:"assets",  no:8, name:"Assets, amend, renew",   blurb:"What the customer owns after activation, and how changes and renewals start from it."},
+  {id:"admin",   no:9, name:"Catalog and access",     blurb:"Ops and Admin only: maintaining products and bundles, who can see and change what, and who approves.", ops:true}
+];
+
+var S = ["sales"], O = ["ops"], SO = ["sales","ops"];
+
+var TESTS = [
+/* 1 quote */
+{id:"QT-1",stage:"quote",p:S,runAs:"Sales rep",title:"Create a quote from an opportunity",
+ setup:"An open opportunity on a test account, for example Torrent Consulting TEST.",
+ steps:["Open the opportunity and go to the <b>Quotes</b> related list.","Click <b>New Quote</b>, give it a name and an <b>Expiration Date</b>, then save."],
+ expect:"The quote opens in <b>Draft</b>, linked to the opportunity and account. The Transaction Line Editor panel appears with no lines, and the margin summary is empty or zero."},
+{id:"QT-2",stage:"quote",p:S,runAs:"Sales rep",title:"A new quote doesn’t replace the opportunity’s synced quote",
+ setup:"An opportunity that already has a synced quote.",
+ steps:["Create a second quote on the same opportunity and add a product to it with <b>Browse Catalog</b>.","Go back to the opportunity."],
+ expect:"The opportunity's products and amount are unchanged. A quote only syncs when you choose <b>Start Sync</b>, which lets reps build alternative quotes without overwriting the primary."},
+
+/* 2 config */
+{id:"CF-1",stage:"config",p:S,runAs:"Sales rep",key:true,title:"Add a program with Browse Catalog",
+ steps:["On the quote, click <b>Browse Catalog</b>.","Pick a program, for example <b>Print Only Bundle</b>, and add it.","Open the program’s configuration (gear icon)."],
+ expect:"The program is added with its packages nested beneath it. Required groups arrive already filled with their default products, so you aren't building from empty."},
+{id:"CF-2",stage:"config",p:S,runAs:"Sales rep",title:"Package defaults are preloaded and swappable",
+ setup:"The program from CF-1.",
+ steps:["Configure a print package, for example <b>8.5x11 Print Package</b>.","Look at the paper, envelope and imaging groups.","Swap the envelope for a different option and save."],
+ expect:"Each of those groups starts with one default selected. Choosing another option replaces the default rather than adding a second one. A required group can't be saved empty."},
+{id:"CF-3",stage:"config",p:S,runAs:"Sales rep",key:true,title:"Choose postage: letter or postcard",
+ steps:["In the print package’s <b>Postage</b> slot, select <b>P1 – Letter Presorted First Class Postage</b>. Use <b>P11 – Postcard</b> on a second run.","Save and look at the lines under the postage item."],
+ expect:"Postage comes in as its own item with exactly two lines under it: the <b>P-code commingle rate</b> and the <b>USPS rate</b>. Both are required, can't be removed, and their quantity follows the postage item.",
+ watch:"Only letter (P1) and postcard (P11) should be offered. That was the 29 September decision. If P2–P7 or P12–P13 appear, say so in your note."},
+{id:"CF-4",stage:"config",p:S,runAs:"Sales rep",title:"Print add-ons sit once at the program level",
+ steps:["In the program configuration, find the <b>Print &amp; Mail Add-Ons</b> group.","Add an add-on, for example an additional page or a BRE."],
+ expect:"Add-ons are chosen once for the program and aren't repeated inside each print package. The price doesn't depend on which print package you picked."},
+{id:"CF-5",stage:"config",p:S,runAs:"Sales rep",title:"More than one print package in a program",
+ steps:["In the <b>Print &amp; Mail</b> group, select two different print packages, for example 8.5x11 and 8.5x14.","Save."],
+ expect:"Both are accepted, up to eight different packages. You can't choose the same package twice in this group. CF-6 covers that case.",
+ watch:"This group now uses checkboxes instead of the one-click swap. Say whether that's worse for reps."},
+{id:"CF-6",stage:"config",p:S,runAs:"Sales rep",explore:true,title:"The same package twice (proposed workaround)",
+ setup:"A quote whose program already contains, for example, the 8.5x11 Print Package.",
+ steps:["Using <b>Browse Catalog</b>, add a second 8.5x11 Print Package directly at the top level of the quote, outside the program.","Configure it with different components and choose its postage."],
+ expect:"It's added as a package in its own right, with defaults and a postage slot, and it prices normally. On the proposal it appears as a separate block in the Print section.",
+ watch:"This is a proposed workaround, not a settled design. Accept means it would work for you. Reject means it wouldn't, so please tell us why."},
+{id:"CF-7",stage:"config",p:S,runAs:"Sales rep",title:"Describe what a package is for",
+ steps:["In the line editor, type a short description of how the customer will use the package in the <b>Description</b> column on a package line, for example “Monthly statements, 8.5x11 duplex”.","Save, then reload the page."],
+ expect:"The note is still there after the reload, and it prints under that package on the proposal (DG-2)."},
+{id:"CF-8",stage:"config",p:S,runAs:"Sales rep",title:"Small prices show their real decimals",
+ steps:["Look at per-piece lines such as the P-code rate or paper."],
+ expect:"Per-piece prices show up to four decimals, for example <b>$0.2649</b>. Whole-dollar prices show two. A line should only read $0.00 if it really is zero."},
+
+/* 3 price */
+{id:"PR-1",stage:"price",p:S,runAs:"Sales rep",key:true,title:"Repricing as a sales user fills the margin summary",
+ setup:"A configured quote with no discounts.",
+ steps:["Reprice the quote as the sales rep.","Read the quote summary: subtotal, discount % and amount, total, gross margin $ and %, margin excluding postage, and <b>Approval Required</b>."],
+ expect:"Every figure is filled in for the sales rep, not only for admins. At list price <b>Approval Required</b> reads <b>None</b>, because a quote at list is exactly on target. It changes to CRO, CRO + CFO or COO as discounts push the margin further below target. Margin figures show in the editor but never on the customer document."},
+{id:"PR-2",stage:"price",p:S,runAs:"Sales rep",key:true,title:"A percentage header discount applies cleanly",
+ setup:"A quote that contains at least one package (nearly all do).",
+ steps:["Open <b>Manage Header Adjustment</b>, choose Percentage and enter 10%.","Reprice."],
+ expect:"No error appears. Until 8 September this failed with <em>“Division undefined”</em>. The discount lands only on discountable lines, and package header lines show <b>Discountable</b> unticked because they carry no price of their own.",
+ watch:"The discount % in the summary is measured against the whole deal, including postage. That was agreed, so it isn't a fault."},
+{id:"PR-3",stage:"price",p:S,runAs:"Sales rep",title:"An amount header discount comes off the total exactly",
+ steps:["Remove the percentage discount, then apply an Amount header adjustment, for example $500.","Reprice."],
+ expect:"The quote total drops by exactly $500, spread across the discountable lines. The per-line split may differ from earlier tests, but the header total must be exact."},
+{id:"PR-4",stage:"price",p:S,runAs:"Sales rep",key:true,title:"Postage and minimum charges aren’t discounted",
+ setup:"The discounted quote from PR-2.",
+ steps:["Check each postage line on its own: the P-code rate line <em>and</em> the USPS rate line.","Check any minimum run charge or minimum processing fee lines."],
+ expect:"None of these lines carries any discount. Postage is a pass-through cost, and minimums were agreed on 1 September to be fixed (“$25 is $25”).",
+ watch:"Note which specific lines, if any, took a discount. We need the product names."},
+{id:"PR-5",stage:"price",p:S,runAs:"Sales rep",title:"Floors hold under a large discount",
+ steps:["Apply a large header percentage, for example 60%, and reprice.","Compare each line’s net price with its <b>Minimum Sell Price</b>."],
+ expect:"No line drops below its floor and no line goes negative. Where a line hits its floor, the rest of the discount moves to lines that still have room. Packages have no floor, which is intended."},
+{id:"PR-6",stage:"price",p:S,runAs:"Sales rep",title:"Sales can discount but not edit prices",
+ steps:["In the line editor, try editing the list price and the sales price on a line."],
+ expect:"Neither can be edited by a sales user. Prices change only through discounts off list. Admins can still edit them.",
+ watch:"Nordis’s admin team is making these column changes in the line editor. If a price field is still editable, name the column."},
+{id:"PR-7",stage:"price",p:S,runAs:"Sales rep",title:"Removing every line resets the summary",
+ steps:["On a throwaway quote with many lines, select all lines and delete them."],
+ expect:"The delete succeeds without an error, even with 50+ lines, and the margin and total figures return to zero."},
+
+/* 4 approve */
+{id:"AP-1",stage:"approve",p:S,runAs:"Sales rep",key:true,title:"A quote at or above target approves itself",was:"Q1",
+ setup:"A quote priced at full list with no discounts.",
+ steps:["Make sure no line or header discount has been applied, then reprice.","Check the quote summary footer: <b>Approval Required</b> reads <b>None</b>.","Click <b>Submit for Review</b>."],
+ expect:"The message says no sign-off is needed, and the status goes straight to <b>Approved</b>. Approval History still records the submission."},
+{id:"AP-2",stage:"approve",p:S,runAs:"Sales rep submits; CRO approves",title:"A small discount goes to the CRO",was:"Q2",
+ setup:"Discount a quote so the variance is above 0 and no more than 5 points.",
+ steps:["Check the footer: <b>Approval Required</b> reads <b>CRO</b>.","Submit for Review. The message names the CRO.","Status moves to <b>In Review</b>.","The CRO approves from the request or the email."],
+ expect:"The status becomes <b>Approved</b>, and the CRO's comments appear in <b>Approval Comments</b> on the quote."},
+{id:"AP-3",stage:"approve",p:S,runAs:"CRO’s inbox",title:"The approval email carries the numbers",was:"Q3",
+ steps:["Open the approval email from AP-2."],
+ expect:"The subject names the quote and how far below target it is. The body gives the quote number, name and variance in points, and explains how to reply: <b>Approve</b> or <b>Reject</b> on the first line, comments on the second."},
+{id:"AP-4",stage:"approve",p:S,runAs:"Sales rep submits; CRO, then CFO approve",key:true,title:"The 5–10 point band needs both CRO and CFO",was:"Q4",
+ setup:"Discount a quote so the variance is above 5 and no more than 10 points.",
+ steps:["Check the footer: <b>Approval Required</b> reads <b>CRO + CFO</b>.","Submit. The CRO and CFO each receive a request.","The CRO approves first. <b>Stop and look at the quote.</b>","Then the CFO approves."],
+ expect:"After the CRO alone, the quote is <b>still In Review</b>. It becomes <b>Approved</b> only after the CFO approves too, and both sets of comments are stored with each approver's role."},
+{id:"AP-5",stage:"approve",p:S,runAs:"Sales rep submits; COO approves",title:"A deep discount goes to the COO alone",was:"Q5",
+ setup:"Discount a quote past 10 points of variance.",
+ steps:["Check the footer: <b>Approval Required</b> reads <b>COO</b>.","Submit, then have the COO approve."],
+ expect:"Only the COO is asked. The CRO and CFO receive nothing. Only the highest band applies. The status becomes <b>Approved</b>."},
+{id:"AP-6",stage:"approve",p:S,runAs:"Sales rep submits; an approver rejects",title:"Rejection sends it back to be fixed",was:"Q6",
+ steps:["Submit a discounted quote.","The approver rejects it with a reason."],
+ expect:"The status becomes <b>Rejected</b>, the reason appears in <b>Approval Comments</b>, and the sales rep can edit and resubmit.",
+ watch:"Also try this on the 5–10 band: have one approver reject before the other responds. The quote should go to <b>Rejected</b> straight away, and the second request should disappear."},
+{id:"AP-7",stage:"approve",p:S,runAs:"Sales rep",title:"The submitter can recall a request",was:"Q7",
+ steps:["Submit a discounted quote.","Before anyone responds, click <b>Recall Approval</b> and give a reason."],
+ expect:"The request is withdrawn from the approver, and the quote returns to <b>Needs Review</b>, ready to edit."},
+{id:"AP-8",stage:"approve",p:S,runAs:"Sales rep",key:true,title:"A bigger discount after approval forces re-approval",was:"Q8",
+ setup:"An approved, discounted quote from AP-2 or AP-5.",
+ steps:["Increase the discount so the margin is worse than what was approved.","Reprice."],
+ expect:"The quote drops back to <b>Needs Review</b> by itself. Reducing the discount, or a change that stays within what was approved, does <em>not</em> pull it back."},
+{id:"AP-9",stage:"approve",p:S,runAs:"Sales rep",title:"A quote can’t be submitted twice",
+ steps:["While a quote is In Review, click <b>Submit for Review</b> again."],
+ expect:"A message says an approval is already running, and no second approval starts."},
+{id:"AP-10",stage:"approve",p:S,runAs:"A second sales rep",explore:true,title:"Who else can recall a request",
+ setup:"A quote another sales rep has submitted that is still In Review.",
+ steps:["Log in as a different sales user and try <b>Recall Approval</b> on their quote."],
+ expect:"Record what happens. The documentation contradicts itself, so we need to see this with a real sales login. Accept if the result is what Nordis wants, and say in your note whether another rep should be able to recall."},
+
+/* 5 propose */
+{id:"DG-1",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Generate a proposal",
+ setup:"A configured, repriced quote.",
+ steps:["Click <b>Create Proposal</b> and choose the <b>Nordis_Proposal</b> template.","Preview the document, then save it."],
+ expect:"A PDF is saved to the quote’s <b>Files</b>. Sections appear in this order, and only when the quote contains them: Platform License, DCR Processing, <b>PRINT &amp; MAIL DELIVERY</b> (Print, Mail Data Enrichment, Returned Mail), <b>DIGITAL DELIVERY</b> (Messaging, Email), ExpressoPay, HOA Vote, Implementation."},
+{id:"DG-2",stage:"propose",p:S,runAs:"Sales rep",title:"Each package reads correctly",
+ steps:["In the proposal from DG-1, read one print package and one digital package."],
+ expect:"The package row shows its headline rate: <b>price per piece</b> for mail, <b>price per send</b> for digital. The package description from CF-7 appears beneath it. Included components are indented and listed by name without prices. Optional add-ons appear once, in an <b>Optional Add-Ons</b> table with price and measure."},
+{id:"DG-3",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Nothing internal reaches the customer",
+ steps:["Read the whole proposal."],
+ expect:"No cost, margin, floor or target figures appear anywhere. Prices shown match the quote after discounts."},
+{id:"DG-4",stage:"propose",p:S,runAs:"Sales rep",title:"Postage shows where the customer expects it",
+ steps:["Find postage in the Print section."],
+ expect:"Postage appears under the print package as the letter or postcard postage item, with the right rate.",
+ watch:"How the USPS rate and P-code lines are displayed is still being settled with Nordis. Accept or reject on whether the numbers are right, and put any layout preference in your note."},
+{id:"DG-5",stage:"propose",p:S,runAs:"Sales rep",known:true,title:"Generating straight after configuring (known issue)",
+ steps:["Configure a bundle and save.","Without repricing, click <b>Create Proposal</b>.","Then reprice and generate again."],
+ expect:"Today the first document can come out with packages missing, and the second one after the reprice is correct. <b>Accept</b> if “always reprice before generating” is an acceptable working rule at go-live. <b>Reject</b> if it has to be fixed first."},
+
+/* 6 order */
+{id:"OR-1",stage:"order",p:SO,runAs:"Sales rep",key:true,title:"Create an order from an approved quote",
+ setup:"A quote in <b>Approved</b> status.",
+ steps:["Click <b>Create Order</b> on the quote."],
+ expect:"An order is created, linked to the account and quote, with the same products, quantities and prices as the quote.",
+ watch:"If a banner says <em>“prices aren’t up to date or the validation isn’t complete”</em> and blocks the order, record the quote number. It's usually a one-time line with no start or end date."},
+{id:"OR-2",stage:"order",p:O,runAs:"Admin",key:true,title:"Activate the order and create assets",
+ setup:"The order from OR-1.",
+ steps:["Check that line start dates are filled in.","Activate the order."],
+ expect:"The order status becomes <b>Activated</b>, and the account shows new assets that match the order lines.",
+ watch:"If activation fails with an error mentioning CPQ (SBQQ) fields, that's the known conflict between CPQ and Revenue Cloud on orders. Copy the exact error."},
+
+/* 7 contract */
+{id:"CT-1",stage:"contract",p:O,runAs:"Admin",key:true,title:"Create the contract from the order",
+ setup:"The activated order from OR-2.",
+ steps:["On the order, click <b>New Contract</b>."],
+ expect:"A contract is created in <b>Draft</b>, linked to the account and the order."},
+{id:"CT-2",stage:"contract",p:S,runAs:"Sales rep",title:"Quotes no longer offer Create Contract",
+ steps:["Open any quote and look through its actions."],
+ expect:"There's no <b>Create Contract</b> action on the quote. Contracts come from orders only, because the order and its assets are the record of what was sold."},
+{id:"CT-3",stage:"contract",p:SO,runAs:"Sales rep",key:true,title:"A standard contract approves itself",was:"C1",
+ setup:"A Draft contract with <em>neither</em> risk box ticked. It doesn't need a document. Contracts 00000621 and 00000591 work if they are still in Draft.",
+ steps:["Click <b>Submit for Review</b>."],
+ expect:"The message says no sign-off is needed, and the contract goes to <b>Approved</b> without anyone being asked.",
+ watch:"Run this first. If the contract sits in <b>In Approval Process</b> and never moves, stop and tell us, because it means standard contracts are getting stuck."},
+{id:"CT-4",stage:"contract",p:SO,runAs:"Sales rep submits; COO approves",title:"Liability above the cap goes to the COO",was:"C2",
+ setup:"Tick <b>Liability Above Standard Cap</b> only, in the MSA Information section.",
+ steps:["Submit, then have the COO approve."],
+ expect:"Only the COO is asked. The status becomes <b>Approved</b>, and their comments appear in <b>Approval Comments</b>."},
+{id:"CT-5",stage:"contract",p:SO,runAs:"Sales rep submits; COO, then Legal approve",key:true,title:"Non-standard language needs COO and Legal",was:"C3",
+ setup:"Tick <b>Non-Standard Terms</b> only and describe the change in <b>Non-Standard Terms Detail</b>.",
+ steps:["Submit. The COO and Legal each receive a request.","The COO approves first. <b>Stop and look at the contract.</b>","Then Legal approves."],
+ expect:"After the COO alone, the contract is <b>still In Approval Process</b>. It reaches <b>Approved</b> only after Legal approves too, and both comments are stored with each approver's role.",
+ watch:"Also confirm that the Legal approver can open and act on the request. Their access comes from contract-management permission sets rather than their Read Only profile."},
+{id:"CT-6",stage:"contract",p:SO,runAs:"Sales rep submits; COO and Legal approve",title:"Both boxes behave like non-standard alone",was:"C4",
+ setup:"Tick <b>both</b> risk boxes.",
+ steps:["Submit and read the message."],
+ expect:"The COO and Legal are asked, with no third approver. The message and the <b>Approval Stage Reason</b> field mention both reasons."},
+{id:"CT-7",stage:"contract",p:SO,runAs:"Sales rep submits; COO rejects",key:true,title:"Rejection sends the contract back for revision",was:"C5",
+ steps:["Submit a contract with either box ticked.","The COO rejects it with a reason."],
+ expect:"The status becomes <b>Rejected</b>, the reason appears in <b>Approval Comments</b>, and <b>Submit for Review</b> is available again for a fresh approval.",
+ watch:"With non-standard terms ticked, have one approver reject before the other responds. The contract should go to Rejected straight away, and the other request should disappear. If the contract has a generated document, that document is not returned to draft automatically. That change is deliberate."},
+{id:"CT-8",stage:"contract",p:SO,runAs:"Sales rep",title:"The submitter can recall a contract",was:"C6",
+ steps:["Submit a flagged contract.","Before anyone responds, click <b>Recall Approval</b> and give a reason."],
+ expect:"The request is withdrawn, and the contract returns to <b>Needs Review</b>."},
+
+/* 8 assets */
+{id:"AS-1",stage:"assets",p:SO,runAs:"Sales rep",title:"Assets show what the customer owns",
+ setup:"The account from OR-2.",
+ steps:["Open the account’s assets, or the asset viewer on the contract page."],
+ expect:"There is one asset per product sold, with the right quantity, price, and start and end dates."},
+{id:"AS-2",stage:"assets",p:SO,runAs:"Admin",key:true,title:"Renew from the contract",
+ setup:"The contract created from a new order in CT-1.",
+ steps:["In the contract’s asset viewer, select the assets and click <b>Renew</b>."],
+ expect:"A renewal quote is created in Draft with the renewing lines on a one-year term, ready to price and send through approval like any other quote."},
+{id:"AS-3",stage:"assets",p:SO,runAs:"Admin",title:"Amend a live asset",
+ steps:["In the asset viewer, select an asset and click <b>Amend</b>.","Change the quantity and save."],
+ expect:"An amendment quote is created showing the change against what's already contracted, not a fresh copy of the whole deal."},
+
+/* 9 admin */
+{id:"AD-1",stage:"admin",p:O,runAs:"Admin, then the new user",key:true,title:"Set up a new sales user who can quote",
+ steps:["Give a test user the <b>Nordis Sales User</b> profile, their Revenue Cloud licences, then the <b>Nordis_RCA_Sales_User</b> permission set group. Assign the licences first.","Log in as that user and open a quote."],
+ expect:"The line editor, catalog browse and quote summary all open with no “Insufficient permissions” message, and the user can add a program."},
+{id:"AD-2",stage:"admin",p:O,runAs:"Sales rep, then an admin",title:"Margin is visible to sales but not editable",
+ steps:["As a sales rep, open a quote and a quote line.","Try to edit gross margin, cost, minimum sell price or margin variance."],
+ expect:"The sales rep can see all of them but edit none of them, because the system calculates them. Customer and partner portal users never see cost or margin."},
+{id:"AD-3",stage:"admin",p:O,runAs:"Admin, then a sales rep",title:"Discount override is controlled",
+ steps:["As an admin, tick <b>Discount Override</b> on a quote, apply a header discount and reprice.","As a sales rep, try to tick the same box on another quote."],
+ expect:"With the override on, products that normally can't be discounted take the discount. The sales rep can't change the box.",
+ watch:"Today only admins can use the override. Use your note to tell us who at Nordis should hold it."},
+{id:"AD-4",stage:"admin",p:O,runAs:"Admin",key:true,title:"Add or change a product and see it in quoting",
+ steps:["Create or edit a 2026 product: price book entry, selling model, <b>Package Family</b>, <b>Price Measure</b>, <b>Usage Based</b> and <b>Discount Disallowed</b>.","Add it to a package’s component group.","Run <b>Refresh Decision Tables</b>, <b>Sync Pricing Data</b> and a <b>Full Product Index Rebuild</b>.","Add the package to a new quote with <b>Browse Catalog</b> and generate a proposal."],
+ expect:"The product appears in the right group in the configurator and prices correctly. On the proposal it's in the right section with the right measure.",
+ watch:"New bundles and components don't show in the configurator until the index rebuild has finished. That's the step people usually miss."},
+{id:"AD-5",stage:"admin",p:O,runAs:"Admin",title:"Price measures match how Nordis sells",
+ steps:["Spot-check the <b>Price Measure</b> on ten products across families (per piece, per send, per record, per month and so on)."],
+ expect:"Each measure matches how the product is sold. The measure is what the proposal prints beside the price.",
+ watch:"We already know Pallet Storage 4x4 is wrong: it should be per pallet per month. List any others in your note."},
+{id:"AD-6",stage:"admin",p:O,runAs:"Admin",title:"Change a bundle default",
+ steps:["Change which option is the default in a package’s component group, for example the envelope.","Run the three refresh steps from AD-4.","Start a new quote with that package."],
+ expect:"New quotes pick up the new default. Existing quotes keep what they had."},
+{id:"AD-7",stage:"admin",p:O,runAs:"Admin, then a Read Only user",title:"Contract risk fields are where people need them",
+ steps:["Open a contract and find the <b>MSA Information</b> section.","Log in as a Read Only user and look at the same section."],
+ expect:"<b>Non-Standard Terms</b>, <b>Non-Standard Terms Detail</b> and <b>Liability Above Standard Cap</b> sit beside Limitation of Liability. Contract users can edit them, and Read Only users can see them but not edit them."},
+{id:"AD-8",stage:"admin",p:O,runAs:"Admin",title:"The approvers are the right people",
+ steps:["Review the user assigned to each approver role: CRO, CFO, COO and Legal."],
+ expect:"Each role is assigned to the right person at Nordis. Before production, the approver logins are switched from sandbox users to production users.",
+ watch:"Nordis still needs to supply the COO's definition of the standard liability cap, which the Liability checkbox depends on."},
+{id:"AD-9",stage:"admin",p:O,runAs:"Admin",title:"You can see where every approval stands",
+ steps:["On a quote under approval, check the Approval History.","On a contract under approval, open the <b>Approvals</b> tab (between Documents and Assets)."],
+ expect:"Both show who has been asked, who has responded, their decisions and comments."},
+{id:"AD-10",stage:"admin",p:O,runAs:"Admin",title:"The catalog matches the 17 September sheet",
+ steps:["Pick ten rows from <code>2026_NordisProductCatalog 9.17.xlsx</code> and find each product in Salesforce."],
+ expect:"Product names and PS codes (<b>Product Code</b>) match the sheet exactly."}
+];
+
+/* ---------- config ---------- */
+// Google Apps Script web app URL (ends in /exec). Leave empty to save in this browser only.
+var RESULTS_ENDPOINT = "";
+
+/* ---------- state ---------- */
+var all = {};            // testerId -> {testId: entry}
+var names = {};          // testerId -> display name
+var mine = {};           // my verdicts
+var pending = {};        // testId -> entry not yet confirmed by the sheet
+var me = {id: null, name: ""};
+var filters = {persona:"all", status:"all"};
+var cards = {};          // testId -> element refs
+var writeChain = Promise.resolve();
+var noteTimers = {};
+
+function lsGet(k, d){ try { var v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
+function lsSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+(function(){
+  var saved = lsGet("nordisUatFilters", null);
+  if (saved) { filters.persona = saved.persona || "all"; filters.status = saved.status || "all"; }
+  var who = lsGet("nordisUatMe", null);
+  if (who && who.id) me = who;
+  if (!me.id) { me.id = "t_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); lsSet("nordisUatMe", me); }
+  mine = lsGet("nordisUatMine", {}) || {};
+  pending = lsGet("nordisUatPending", {}) || {};
+  all[me.id] = mine; names[me.id] = me.name;
+})();
+
+function el(tag, cls, html){ var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+var ICON_OK = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var ICON_NO = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+/* ---------- build ---------- */
+function build(){
+  var host = document.getElementById("stages");
+  STAGES.forEach(function(st){
+    var sec = el("section"); sec.id = "stage-" + st.id; sec.dataset.stage = st.id;
+    var head = el("div","shead");
+    head.appendChild(el("span","sno", String(st.no)));
+    head.appendChild(el("div","eyebrow", st.ops ? "Ops &amp; Admin" : "Stage " + st.no + " of 8"));
+    head.appendChild(el("h2", null, st.name));
+    head.appendChild(el("p", null, st.blurb));
+    sec.appendChild(head);
+    if (st.id === "approve") sec.appendChild(el("div","flow",'<span class="st">Draft</span><span class="arr">→</span><span class="st">Needs Review</span><span class="arr">→</span><span class="st">In Review</span><span class="arr">→</span><span class="st end">Approved</span><span class="arr">/</span><span class="st bad">Rejected</span>'));
+    if (st.id === "approve") sec.appendChild(el("div","tscroll",'<table><thead><tr><th>Margin variance</th><th>Who approves</th><th>Rule</th></tr></thead><tbody><tr><td>At or above target</td><td>Nobody</td><td>Approves automatically</td></tr><tr><td>Over 0, up to 5 points</td><td>CRO</td><td>One approver</td></tr><tr><td>Over 5, up to 10 points</td><td>CRO + CFO</td><td>Both must approve</td></tr><tr><td>Over 10 points</td><td>COO</td><td>One approver</td></tr></tbody></table>'));
+    if (st.id === "contract") sec.appendChild(el("div","tscroll",'<table><thead><tr><th>Risk boxes ticked</th><th>Who approves</th><th>Rule</th></tr></thead><tbody><tr><td>Neither</td><td>Nobody</td><td>Approves automatically</td></tr><tr><td>Liability Above Standard Cap</td><td>COO</td><td>One approver</td></tr><tr><td>Non-Standard Terms, or both</td><td>COO + Legal</td><td>Both must approve</td></tr></tbody></table>'));
+    if (st.id === "contract") sec.appendChild(el("div","flow",'<span class="st">Draft</span><span class="arr">→</span><span class="st">Needs Review</span><span class="arr">→</span><span class="st">In Approval Process</span><span class="arr">→</span><span class="st end">Approved</span><span class="arr">→</span><span class="st end">Activated (on signature)</span><span class="arr">/</span><span class="st bad">Rejected</span>'));
+
+    TESTS.filter(function(t){ return t.stage === st.id; }).forEach(function(t){ sec.appendChild(buildCard(t)); });
+    var none = el("p","empty","No tests here match the current filters."); none.hidden = true; none.dataset.none = "1";
+    sec.appendChild(none);
+    host.appendChild(sec);
+  });
+
+  var j = document.getElementById("journey");
+  STAGES.forEach(function(st){
+    var li = el("li", st.ops ? "ops" : null);
+    var a = el("a"); a.href = "#stage-" + st.id;
+    a.innerHTML = '<span class="num">' + (st.ops ? "Ops" : "0" + st.no) + '</span><span class="nm"></span><span class="mini"><i class="a"></i><i class="r"></i></span><span class="cnt"></span>';
+    a.querySelector(".nm").textContent = st.name;
+    li.appendChild(a); j.appendChild(li);
+    st.jEl = a;
+  });
+}
+
+function buildCard(t){
+  var c = el("article","card"); c.id = "t-" + t.id; c.dataset.state = "open";
+  var body = el("div","cbody");
+  var h = el("div","chead");
+  h.appendChild(el("span","tid", t.id));
+  var h3 = el("h3"); h3.textContent = t.title; h.appendChild(h3);
+  var tags = el("div","tags");
+  if (t.key) tags.appendChild(el("span","tag key","Key test"));
+  if (t.known) tags.appendChild(el("span","tag known","Known issue"));
+  if (t.explore) tags.appendChild(el("span","tag explore","Exploratory"));
+  t.p.forEach(function(p){ tags.appendChild(el("span","tag", p === "sales" ? "Sales" : "Ops &amp; Admin")); });
+  if (t.was) tags.appendChild(el("span","tag","was " + t.was));
+  h.appendChild(tags);
+  body.appendChild(h);
+  var ra = el("div","runas"); ra.innerHTML = "Run as <b></b>"; ra.querySelector("b").textContent = t.runAs; body.appendChild(ra);
+  var dl = el("dl","steps");
+  if (t.setup){ dl.appendChild(el("dt",null,"Setup")); dl.appendChild(el("dd",null,t.setup)); }
+  dl.appendChild(el("dt",null,"Steps"));
+  var dd = el("dd"); var ol = el("ol"); t.steps.forEach(function(s){ ol.appendChild(el("li",null,s)); }); dd.appendChild(ol); dl.appendChild(dd);
+  body.appendChild(dl);
+  body.appendChild(el("div","expect",'<span class="l">Expected</span>' + t.expect));
+  if (t.watch) body.appendChild(el("div","watch",'<span class="l">Watch for</span>' + t.watch));
+  c.appendChild(body);
+
+  var tray = el("div","tray");
+  var row = el("div","vrow");
+  var acc = el("button","vbtn acc", ICON_OK + "Accept"); acc.type = "button"; acc.setAttribute("aria-pressed","false"); acc.id = "acc-" + t.id;
+  var rej = el("button","vbtn rej", ICON_NO + "Reject"); rej.type = "button"; rej.setAttribute("aria-pressed","false"); rej.id = "rej-" + t.id;
+  var rec = el("input","rec"); rec.type = "text"; rec.id = "rec-" + t.id; rec.placeholder = "Quote / order / contract #"; rec.setAttribute("aria-label","Record number used for " + t.id);
+  var sv = el("span","saved"); sv.setAttribute("aria-live","polite");
+  row.appendChild(acc); row.appendChild(rej); row.appendChild(rec); row.appendChild(sv);
+  tray.appendChild(row);
+  var nt = el("textarea","nt"); nt.id = "note-" + t.id; nt.placeholder = "Notes: what you saw, error text, or anything you'd change. Add them whether you accept or reject."; nt.setAttribute("aria-label","Notes for " + t.id);
+  tray.appendChild(nt);
+  var others = el("div","others"); tray.appendChild(others);
+  c.appendChild(tray);
+
+  acc.addEventListener("click", function(){ setStatus(t.id, (mine[t.id] && mine[t.id].status === "accepted") ? null : "accepted"); });
+  rej.addEventListener("click", function(){ setStatus(t.id, (mine[t.id] && mine[t.id].status === "rejected") ? null : "rejected"); });
+  nt.addEventListener("input", function(){ queueText(t.id); });
+  nt.addEventListener("blur", function(){ flushText(t.id); });
+  rec.addEventListener("input", function(){ queueText(t.id); });
+  rec.addEventListener("blur", function(){ flushText(t.id); });
+
+  cards[t.id] = {card:c, acc:acc, rej:rej, rec:rec, nt:nt, sv:sv, others:others, test:t};
+  return c;
+}
+
+/* ---------- writes ---------- */
+function needName(){
+  if (me.name) return false;
+  document.getElementById("testerName").focus();
+  document.getElementById("nameHint").hidden = false;
+  return true;
+}
+function setStatus(id, status){
+  if (needName()) return;
+  var r = cards[id];
+  save(id, {status: status, note: r.nt.value, record: r.rec.value});
+}
+function queueText(id){
+  cards[id].sv.textContent = "Editing…";
+  clearTimeout(noteTimers[id]);
+  noteTimers[id] = setTimeout(function(){ flushText(id); }, 900);
+}
+function flushText(id){
+  clearTimeout(noteTimers[id]); noteTimers[id] = null;
+  var r = cards[id], cur = mine[id] || {};
+  if ((cur.note || "") === r.nt.value && (cur.record || "") === r.rec.value) { r.sv.textContent = cur.at ? "Saved " + stamp(cur.at) : ""; return; }
+  if (needName()) { r.sv.textContent = "Add your name to save"; return; }
+  save(id, {status: cur.status || null, note: r.nt.value, record: r.rec.value});
+}
+function save(id, fields){
+  var entry = {status: fields.status || null, note: (fields.note || "").slice(0, 4000), record: (fields.record || "").slice(0, 60), at: new Date().toISOString()};
+  mine[id] = entry; all[me.id] = mine; lsSet("nordisUatMine", mine);
+  pending[id] = entry; lsSet("nordisUatPending", pending);
+  cards[id].sv.textContent = RESULTS_ENDPOINT ? "Saving…" : "Saved in this browser";
+  refresh();
+  if (RESULTS_ENDPOINT) pushOne(id);
+}
+function pushOne(id){
+  writeChain = writeChain.then(function(){
+    var entry = pending[id]; if (!entry || !me.name) return;
+    // text/plain body keeps this a simple request (no CORS preflight, which Apps Script can't answer)
+    return fetch(RESULTS_ENDPOINT, {method:"POST", body: JSON.stringify({testerId: me.id, tester: me.name, testId: id, status: entry.status, note: entry.note, record: entry.record, at: entry.at})})
+      .then(function(res){ return res.json(); })
+      .then(function(j){
+        if (!j || !j.ok) throw new Error((j && j.error) || "rejected");
+        if (pending[id] && pending[id].at === entry.at) { delete pending[id]; lsSet("nordisUatPending", pending); }
+        cards[id].sv.textContent = "Saved " + stamp(entry.at);
+        setConn(true);
+      });
+  }).catch(function(){
+    cards[id].sv.textContent = "Saved in this browser, will retry";
+    setConn(false);
+  });
+}
+function flushPending(){ Object.keys(pending).forEach(pushOne); }
+function stamp(iso){ try { var d = new Date(iso); return d.toLocaleString(undefined,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}); } catch(e){ return ""; } }
+function showBanner(msg){ var b = document.getElementById("dbBanner"); b.textContent = msg || ""; b.hidden = !msg; }
+function setConn(ok){
+  if (!RESULTS_ENDPOINT) showBanner("Results are saving in this browser only. The shared results sheet isn't connected yet.");
+  else if (!ok) showBanner("Can't reach the results sheet right now. Your verdicts are kept in this browser and will send when the connection is back.");
+  else showBanner("");
+}
+/* ---------- derive + render ---------- */
+function overall(id){
+  var st = "open";
+  Object.keys(all).forEach(function(uid){ var e = all[uid] && all[uid][id]; if (!e || !e.status) return; if (e.status === "rejected") st = "rejected"; else if (st !== "rejected") st = "accepted"; });
+  return st;
+}
+function visible(t){
+  if (filters.persona !== "all" && t.p.indexOf(filters.persona) < 0) return false;
+  if (filters.status !== "all" && overall(t.id) !== filters.status) return false;
+  return true;
+}
+function personaMatch(t){ return filters.persona === "all" || t.p.indexOf(filters.persona) >= 0; }
+
+var renderSeq = 0;
+function refresh(){
+  var tot=0, a=0, r=0;
+  TESTS.forEach(function(t){
+    var ref = cards[t.id], st = overall(t.id);
+    ref.card.dataset.state = st;
+    ref.card.hidden = !visible(t);
+    if (personaMatch(t)) { tot++; if (st==="accepted") a++; else if (st==="rejected") r++; }
+    var m = mine[t.id] || {};
+    ref.acc.setAttribute("aria-pressed", m.status === "accepted" ? "true" : "false");
+    ref.rej.setAttribute("aria-pressed", m.status === "rejected" ? "true" : "false");
+    if (document.activeElement !== ref.nt && !noteTimers[t.id]) ref.nt.value = m.note || "";
+    if (document.activeElement !== ref.rec && !noteTimers[t.id]) ref.rec.value = m.record || "";
+    if (m.at && !/Sav|Edit|Not/.test(ref.sv.textContent)) ref.sv.textContent = "Saved " + stamp(m.at);
+  });
+  document.getElementById("pTotal").textContent = tot;
+  document.getElementById("pAcc").textContent = a;
+  document.getElementById("pRej").textContent = r;
+  document.getElementById("pOpen").textContent = tot - a - r;
+  document.getElementById("mA").style.width = (tot ? a/tot*100 : 0) + "%";
+  document.getElementById("mR").style.width = (tot ? r/tot*100 : 0) + "%";
+
+  STAGES.forEach(function(st){
+    var ts = TESTS.filter(function(t){ return t.stage === st.id && personaMatch(t); });
+    var sa = 0, sr = 0; ts.forEach(function(t){ var s = overall(t.id); if (s==="accepted") sa++; else if (s==="rejected") sr++; });
+    var li = st.jEl.parentNode; li.hidden = ts.length === 0;
+    st.jEl.querySelector(".mini .a").style.width = (ts.length ? sa/ts.length*100 : 0) + "%";
+    st.jEl.querySelector(".mini .r").style.width = (ts.length ? sr/ts.length*100 : 0) + "%";
+    st.jEl.querySelector(".cnt").textContent = (sa + sr) + " of " + ts.length + " done" + (sr ? " · " + sr + " rejected" : "");
+    var sec = document.getElementById("stage-" + st.id);
+    var anyVisible = TESTS.some(function(t){ return t.stage === st.id && visible(t); });
+    sec.hidden = ts.length === 0;
+    sec.querySelector('[data-none]').hidden = anyVisible;
+  });
+  renderOthers(++renderSeq);
+}
+
+function initials(n){ var p = (n || "?").trim().split(/\s+/); return ((p[0] || "?")[0] + (p.length > 1 ? p[p.length - 1][0] : "")).toUpperCase(); }
+function renderOthers(){
+  var ids = Object.keys(all).filter(function(u){ return u !== me.id; });
+  TESTS.forEach(function(t){
+    var box = cards[t.id].others; box.textContent = "";
+    ids.forEach(function(u){
+      var e = all[u] && all[u][t.id]; if (!e || (!e.status && !e.note && !e.record)) return;
+      var row = el("div","other");
+      var av = el("span","av"); av.textContent = initials(names[u]); row.appendChild(av);
+      var who = el("div","who");
+      var b = el("b"); b.textContent = names[u] || "Another tester"; who.appendChild(b);
+      var pill = el("span","pill " + (e.status || "")); pill.textContent = e.status ? e.status : "note only"; who.appendChild(pill);
+      if (e.record){ var rc = el("span","runas"); rc.textContent = "#" + e.record; who.appendChild(rc); }
+      if (e.at){ var tm = el("span","runas"); tm.textContent = stamp(e.at); who.appendChild(tm); }
+      row.appendChild(who);
+      if (e.note){ var n = el("div","ntx"); n.textContent = e.note; row.appendChild(n); }
+      box.appendChild(row);
+    });
+  });
+}
+/* ---------- filters ---------- */
+function wireSeg(id, key){
+  var seg = document.getElementById(id);
+  Array.prototype.forEach.call(seg.querySelectorAll("button"), function(b){
+    b.setAttribute("aria-pressed", b.dataset.v === filters[key] ? "true" : "false");
+    b.addEventListener("click", function(){
+      filters[key] = b.dataset.v;
+      Array.prototype.forEach.call(seg.querySelectorAll("button"), function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      try { localStorage.setItem("nordisUatFilters", JSON.stringify(filters)); } catch(e){}
+      refresh();
+    });
+  });
+}
+
+/* ---------- export ---------- */
+function exportText(){
+  var lines = ["Nordis RCA acceptance results, " + new Date().toLocaleString(), ""];
+  STAGES.forEach(function(st){
+    lines.push("== " + st.no + ". " + st.name);
+    TESTS.filter(function(t){ return t.stage === st.id; }).forEach(function(t){
+      lines.push(t.id + "  " + t.title + "  [" + overall(t.id).toUpperCase() + "]");
+      Object.keys(all).forEach(function(u){
+        var e = all[u] && all[u][t.id]; if (!e || (!e.status && !e.note)) return;
+        var nm = u === me.id ? (me.name || "You") : (names[u] || "Tester");
+        lines.push("   - " + nm + ": " + (e.status ? e.status.toUpperCase() : "NOTE") + (e.record ? " (#" + e.record + ")" : "") + (e.note ? ": " + e.note.replace(/\s+/g, " ") : ""));
+      });
+    });
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+document.getElementById("copyBtn").addEventListener("click", function(){
+  var btn = this, txt = exportText();
+  var fallback = function(){ var box = document.getElementById("exportBox"); box.hidden = false; var ta = document.getElementById("exportText"); ta.value = txt; ta.focus(); ta.select(); };
+  try { navigator.clipboard.writeText(txt).then(function(){ btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = "Copy results"; }, 1800); }, fallback); } catch (e) { fallback(); }
+});
+
+/* ---------- load ---------- */
+function load(){
+  if (!RESULTS_ENDPOINT) return Promise.resolve();
+  return fetch(RESULTS_ENDPOINT + "?t=" + Date.now()).then(function(res){ return res.json(); }).then(function(j){
+    if (!j || !j.ok) throw new Error("bad response");
+    var next = {}, nm = {};
+    (j.rows || []).forEach(function(r){
+      if (!r.testerId || !r.testId) return;
+      (next[r.testerId] = next[r.testerId] || {})[r.testId] = {status: r.status || null, note: r.note || "", record: r.record || "", at: r.at || ""};
+      nm[r.testerId] = r.tester || "";
+    });
+    var srv = next[me.id] || {};
+    Object.keys(mine).forEach(function(k){ if (!srv[k] || (mine[k].at || "") > (srv[k].at || "")) srv[k] = mine[k]; });
+    mine = srv; next[me.id] = mine; lsSet("nordisUatMine", mine);
+    nm[me.id] = me.name;
+    all = next; names = nm;
+    setConn(true);
+    refresh();
+  }).catch(function(){ setConn(false); });
+}
+
+/* ---------- boot ---------- */
+build();
+wireSeg("fPersona","persona");
+wireSeg("fStatus","status");
+(function(){
+  var inp = document.getElementById("testerName");
+  inp.value = me.name || "";
+  var commit = function(){
+    var v = inp.value.trim().slice(0, 80);
+    if (v === me.name) return;
+    me.name = v; names[me.id] = v; lsSet("nordisUatMe", me);
+    document.getElementById("nameHint").hidden = true;
+    if (v && RESULTS_ENDPOINT) { Object.keys(mine).forEach(function(k){ pending[k] = mine[k]; }); lsSet("nordisUatPending", pending); flushPending(); }
+  };
+  inp.addEventListener("change", commit);
+  inp.addEventListener("blur", commit);
+})();
+setConn(!!RESULTS_ENDPOINT);
+refresh();
+load().then(function(){ if (me.name) flushPending(); });
+setInterval(function(){ if (document.visibilityState === "visible") load(); }, 45000);
+document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") load(); });
+})();
+</script>
+</body>
+</html>
