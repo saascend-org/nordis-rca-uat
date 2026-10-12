@@ -184,6 +184,19 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
 .who-bar input{border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 10px;font:inherit;font-size:.86rem;width:13rem;max-width:100%}
 .name-hint{font-size:.8rem;color:var(--stop)}
 .other .av{width:24px;height:24px;border-radius:50%;grid-row:1/3;background:var(--accent-soft);color:var(--accent);font-family:var(--mono);font-size:.64rem;display:inline-flex;align-items:center;justify-content:center;font-weight:500}
+/* Expandable step screenshots: collapsed by default, image fetched on first open, click to zoom. */
+details.shot{margin:6px 0 2px}
+details.shot summary{cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);list-style:none;padding:2px 8px;border:1px solid var(--rule);border-radius:999px;background:var(--sunk)}
+details.shot summary::-webkit-details-marker{display:none}
+details.shot summary::before{content:"";width:0;height:0;border-style:solid;border-width:4px 0 4px 6px;border-color:transparent transparent transparent currentColor;transition:transform .15s}
+details.shot[open] summary::before{transform:rotate(90deg)}
+details.shot summary:hover{color:var(--ink)}
+details.shot figure{margin:8px 0 4px}
+details.shot img{display:block;max-width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;cursor:zoom-in;background:var(--surface)}
+details.shot figcaption{font-size:.82rem;color:var(--ink-faint);margin-top:4px}
+dialog.zoom{padding:0;border:0;background:transparent;max-width:96vw;max-height:94vh}
+dialog.zoom::backdrop{background:rgba(10,16,20,.82)}
+dialog.zoom img{display:block;max-width:96vw;max-height:94vh;width:auto;height:auto;border-radius:6px;cursor:zoom-out}
 </style>
 <style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -265,7 +278,7 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
       <ol>
         <li>Follow the steps and compare what you see with <b>Expected</b>.</li>
         <li>Choose <b>Accept</b> if it behaves as described, or <b>Reject</b> if it doesn't.</li>
-        <li>Enter the <b>quote, order or contract number</b> you used. With that and your login, we can trace the problem without asking you to reproduce it.</li>
+        <li>Paste the <b>link to the record</b> you used: copy it from the browser address bar while the quote, order or contract is open. With that and your login, we can trace the problem without asking you to reproduce it.</li>
         <li>Add a note. For a rejection, say what happened and copy any error message word for word. For an acceptance, anything you'd like changed is still useful.</li>
       </ol>
       <p>Enter your name at the top of the page first, so your results are credited to you. Results save automatically to a shared sheet. The progress figures and the <b>Show</b> filter count only your own verdicts, and other testers' results appear under each test for reference, so two people can run the same test. Tests marked <b>Key test</b> are the ones most likely to expose a real problem, so run them first.</p>
@@ -459,7 +472,7 @@ var TESTS = [
  setup:"A quote in <b>Approved</b> status.",
  steps:["Click <b>Create Order</b> on the quote."],
  expect:"An order is created in <b>Draft</b>, linked to the account and quote, with the same products, quantities and prices as the quote. <b>Create Contract</b> is the first action on the order.",
- watch:"If a banner says <em>“prices aren’t up to date or the validation isn’t complete”</em> and blocks the order, record the quote number. It's usually a one-time line with no start or end date."},
+ watch:"If a banner says <em>“prices aren’t up to date or the validation isn’t complete”</em> and blocks the order, paste the quote link in your note. It's usually a one-time line with no start or end date."},
 
 /* 7 contract */
 {id:"CT-1",stage:"contract",p:SO,runAs:"Sales rep",key:true,title:"Create the contract from the order",
@@ -633,6 +646,48 @@ function build(){
   });
 }
 
+// SHOTS: screenshots keyed by test id, each pinned to a 1-based step. Captured on fictional
+// demo data with names, users and figures masked, because this page is public.
+var SHOTS = {
+  "QT-1":[{step:1,src:"shots/qt-1-1.webp",cap:"The Quotes list sits in the right-hand column of the opportunity. Its actions are behind the ▾ menu."},
+          {step:2,src:"shots/qt-1-2.webp",cap:"Open the ▾ menu and choose New Quote."},
+          {step:2,src:"shots/qt-1-3.webp",cap:"Fill in Quote Name and Expiration Date, then Save."}],
+  "CF-1":[{step:1,src:"shots/cf-1-1.webp",cap:"Browse Catalogs is the first button on the quote."},
+          {step:2,src:"shots/cf-1-2.webp",cap:"Choose the Programs category, then Add on the program you want."},
+          {step:3,src:"shots/cf-1-3.webp",cap:"The gear opens the program’s configuration."},
+          {step:3,src:"shots/cf-1-4.webp",cap:"The configurator: one tab per channel, with a running summary on the right."}],
+  "CF-2":[{step:1,src:"shots/cf-2-1.webp",cap:"On the Print & Mail tab the default package is already ticked. Its gear opens the package."},
+          {step:2,src:"shots/cf-2-2.webp",cap:"Each package group has its own tab, and each starts with a default selected."},
+          {step:3,src:"shots/cf-2-3.webp",cap:"Picking another option replaces the default."}],
+  "CF-4":[{step:1,src:"shots/cf-3-1.webp",cap:"The Postage tab, with Letter Postage selected. Postcard Postage is the alternative."}],
+  "PR-1":[{step:1,src:"shots/pr-1-1.webp",cap:"Reprice All is in the line editor’s toolbar."},
+          {step:2,src:"shots/pr-1-2.webp",cap:"The quote summary and the footer bar below it. Figures are hidden in this picture."}],
+  "PR-2":[{step:1,src:"shots/pr-2-1.webp",cap:"Manage Header Adjustment is in the same toolbar."},
+          {step:1,src:"shots/pr-2-2.webp",cap:"Choose Percentage, enter the value, then Apply."}],
+  "AP-2":[{step:1,src:"shots/ap-2-1.webp",cap:"Approval Required is the last item in the footer bar."},
+          {step:2,src:"shots/ap-2-2.webp",cap:"Submit for Review is in the quote’s header."}],
+  "AP-7":[{step:2,src:"shots/ap-7-2.webp",cap:"Recall Approval is under the ▾ menu at the end of the header buttons."}],
+  "OR-1":[{step:1,src:"shots/or-1-1.webp",cap:"Create Order is under the same ▾ menu."}]
+};
+function addShots(li, id, step){
+  var list = (SHOTS[id] || []).filter(function(s){ return s.step === step; });
+  if (!list.length) return;
+  var d = el("details","shot"); d.appendChild(el("summary",null, list.length > 1 ? "Show me (" + list.length + ")" : "Show me"));
+  list.forEach(function(s){
+    var fig = el("figure"); var img = el("img"); img.alt = s.cap; img.loading = "lazy"; img.dataset.src = s.src;
+    fig.appendChild(img); fig.appendChild(el("figcaption",null,s.cap)); d.appendChild(fig);
+    img.addEventListener("click", function(){ zoom(s.src, s.cap); });
+    img.addEventListener("error", function(){ fig.hidden = true; });
+  });
+  d.addEventListener("toggle", function(){ if (d.open) d.querySelectorAll("img[data-src]").forEach(function(i){ if (!i.src) i.src = i.dataset.src; }); });
+  li.appendChild(d);
+}
+function zoom(src, cap){
+  var dlg = document.getElementById("zoom");
+  if (!dlg){ dlg = el("dialog","zoom"); dlg.id = "zoom"; dlg.appendChild(el("img")); document.body.appendChild(dlg);
+    dlg.addEventListener("click", function(){ dlg.close(); }); }
+  var im = dlg.querySelector("img"); im.src = src; im.alt = cap; dlg.showModal();
+}
 function buildCard(t){
   var c = el("article","card"); c.id = "t-" + t.id; c.dataset.state = "open";
   var body = el("div","cbody");
@@ -651,7 +706,7 @@ function buildCard(t){
   var dl = el("dl","steps");
   if (t.setup){ dl.appendChild(el("dt",null,"Setup")); dl.appendChild(el("dd",null,t.setup)); }
   dl.appendChild(el("dt",null,"Steps"));
-  var dd = el("dd"); var ol = el("ol"); t.steps.forEach(function(s){ ol.appendChild(el("li",null,s)); }); dd.appendChild(ol); dl.appendChild(dd);
+  var dd = el("dd"); var ol = el("ol"); t.steps.forEach(function(s, i){ var li = el("li",null,s); addShots(li, t.id, i + 1); ol.appendChild(li); }); dd.appendChild(ol); dl.appendChild(dd);
   body.appendChild(dl);
   body.appendChild(el("div","expect",'<span class="l">Expected</span>' + t.expect));
   if (t.watch) body.appendChild(el("div","watch",'<span class="l">Watch for</span>' + t.watch));
@@ -661,7 +716,7 @@ function buildCard(t){
   var row = el("div","vrow");
   var acc = el("button","vbtn acc", ICON_OK + "Accept"); acc.type = "button"; acc.setAttribute("aria-pressed","false"); acc.id = "acc-" + t.id;
   var rej = el("button","vbtn rej", ICON_NO + "Reject"); rej.type = "button"; rej.setAttribute("aria-pressed","false"); rej.id = "rej-" + t.id;
-  var rec = el("input","rec"); rec.type = "text"; rec.id = "rec-" + t.id; rec.placeholder = "Quote / order / contract #"; rec.setAttribute("aria-label","Record number used for " + t.id);
+  var rec = el("input","rec"); rec.type = "text"; rec.id = "rec-" + t.id; rec.placeholder = "Paste the record link"; rec.setAttribute("aria-label","Link to the record used for " + t.id);
   var sv = el("span","saved"); sv.setAttribute("aria-live","polite");
   row.appendChild(acc); row.appendChild(rej); row.appendChild(rec); row.appendChild(sv);
   tray.appendChild(row);
