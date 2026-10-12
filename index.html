@@ -160,6 +160,7 @@ dl.steps dd{margin:0;min-width:0}
 .saved{font-family:var(--mono);font-size:.7rem;color:var(--ink-faint);margin-left:auto}
 textarea.nt{width:100%;min-height:62px;resize:vertical;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);border-radius:6px;padding:8px 10px;font:inherit;font-size:.9rem;line-height:1.45}
 .others{display:flex;flex-direction:column;gap:6px}
+.others-h{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-top:2px}
 .other{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.86rem;align-items:start}
 .other img{width:22px;height:22px;border-radius:50%;grid-row:1/3}
 .other .who{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
@@ -194,8 +195,8 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
     <p class="lede">Everything built so far, from the first quote to the renewal, written as steps you can repeat. Work through the tests for your role. Mark each one <b>Accept</b> or <b>Reject</b>, and add a note either way. Your answers save as you go, and the rest of the team can see them.</p>
     <div class="meta">
       <span><b>Environment</b> Nordis_Sandbox (ntfull)</span>
-      <span><b>Scope</b> Gate 2 quoting + Gate 3 approvals, proposal, order, contract, assets</span>
-      <span><b>Prepared</b> 30 Sep 2026</span>
+      <span><b>Scope</b> Gate 2 quoting + Gate 3 approvals, proposal, order, contract, NDA, assets</span>
+      <span><b>Prepared</b> 12 Oct 2026</span>
     </div>
   </header>
 
@@ -224,9 +225,9 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
 
   <div class="progress" id="progress" aria-live="polite">
     <div class="pcell"><span class="n" id="pTotal">0</span><span class="k">tests in view</span></div>
-    <div class="pcell ok"><span class="n" id="pAcc">0</span><span class="k">accepted</span></div>
-    <div class="pcell no"><span class="n" id="pRej">0</span><span class="k">rejected</span></div>
-    <div class="pcell"><span class="n" id="pOpen">0</span><span class="k">not yet tested</span></div>
+    <div class="pcell ok"><span class="n" id="pAcc">0</span><span class="k">you accepted</span></div>
+    <div class="pcell no"><span class="n" id="pRej">0</span><span class="k">you rejected</span></div>
+    <div class="pcell"><span class="n" id="pOpen">0</span><span class="k">left for you to test</span></div>
     <div class="meterbar" aria-hidden="true"><i class="a" id="mA"></i><i class="r" id="mR"></i></div>
   </div>
 
@@ -255,7 +256,7 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
     <div class="grid2">
       <div class="note warn"><span class="t">Test as the real person, not as an admin</span><p>Admins see fields and buttons that ordinary users don't. Almost every defect found so far showed up only when testing as a sales rep.</p></div>
       <div class="note warn"><span class="t">Add products with Browse Catalog</span><p>Use the <b>Browse Catalog</b> action on the quote to add products. It runs Revenue Cloud pricing, so margins and approvals come out right. Don’t use any other way of adding lines.</p></div>
-      <div class="note"><span class="t">Reprice before you generate a proposal</span><p>After configuring a bundle, reprice once before clicking <b>Create Proposal</b>. See DG-5 for why.</p></div>
+      <div class="note"><span class="t">Preview the proposal whenever you like</span><p><b>Preview Draft Proposal</b> works on a quote in any status and produces a watermarked draft. <b>Create Proposal</b>, for the copy that goes to the customer, appears once the quote is approved.</p></div>
       <div class="note"><span class="t">Content now, formatting later</span><p>For the proposal, judge whether the right things appear with the right numbers. Styling is still being refined. Put layout preferences in your notes, but don't reject a test for them alone.</p></div>
     </div>
 
@@ -267,7 +268,7 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
         <li>Enter the <b>quote, order or contract number</b> you used. With that and your login, we can trace the problem without asking you to reproduce it.</li>
         <li>Add a note. For a rejection, say what happened and copy any error message word for word. For an acceptance, anything you'd like changed is still useful.</li>
       </ol>
-      <p>Enter your name at the top of the page first, so your results are credited to you. Results save automatically to a shared sheet, and everyone's verdicts appear under each test, so two people can run the same test. Tests marked <b>Key test</b> are the ones most likely to expose a real problem, so run them first.</p>
+      <p>Enter your name at the top of the page first, so your results are credited to you. Results save automatically to a shared sheet. The progress figures and the <b>Show</b> filter count only your own verdicts, and other testers' results appear under each test for reference, so two people can run the same test. Tests marked <b>Key test</b> are the ones most likely to expose a real problem, so run them first.</p>
     </div>
   </section>
 
@@ -280,6 +281,7 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
       <div class="note"><span class="t">Several emails per approval</span><p>Submitters are emailed at submission, decision and outcome. Tell us if that's too many.</p></div>
       <div class="note"><span class="t">Contract outcome emails omit comments</span><p>The email back to the submitter is the standard Salesforce one. Approver comments are always on the contract in <b>Approval Comments</b>.</p></div>
       <div class="note"><span class="t">Approved records lock</span><p>Approval locks the record to protect the agreed pricing and terms. Admins can unlock it if needed.</p></div>
+      <div class="note"><span class="t">Postage can pull the margin down</span><p>The commingle-rate products still carry an older all-in cost that is higher than their price, so a quote with postage shows a lower margin, sometimes negative, and may route to a more senior approver. This clears once Nordis supplies the presort cost.</p></div>
       <div class="note"><span class="t">Leave Tax and Shipping blank</span><p>Postage is priced on the lines. Typing a value into the quote’s Tax or Shipping &amp; Handling field counts it twice in the grand total.</p></div>
       <div class="note"><span class="t">Proposal limit in the sandbox</span><p>The sandbox allows 50 document generations an hour across all users. Anything over that comes back as <em>Blocked</em>. Wait a while and try again.</p></div>
       <div class="note"><span class="t">No automatic pull-back on contracts</span><p>Ticking a risk box after a contract is approved doesn't send it back for approval. The record lock is what prevents that change. Quotes do pull back (AP-8).</p></div>
@@ -295,13 +297,13 @@ footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);color:v
 
 var STAGES = [
   {id:"quote",   no:1, name:"Start a quote",          blurb:"Create a quote from an opportunity without disturbing the one already synced."},
-  {id:"config",  no:2, name:"Build the program quote",      blurb:"Add a program with Browse Catalog, then configure its packages, postage and add-ons."},
+  {id:"config",  no:2, name:"Build the program quote",      blurb:"Add a program with Browse Catalog, set each package’s volume, then configure postage, add-ons, minimums and processing turnaround."},
   {id:"price",   no:3, name:"Price and discount",     blurb:"Check the margin summary, then apply header discounts and confirm floors and non-discountable lines hold."},
   {id:"approve", no:4, name:"Quote approval",         blurb:"Approval routing follows margin variance, in percentage points below the target margin set by the catalog."},
-  {id:"propose", no:5, name:"Proposal document",      blurb:"Generate the customer proposal from the quote and check what it shows."},
-  {id:"order",   no:6, name:"Order",                  blurb:"Turn an approved quote into an order and activate it to create assets."},
-  {id:"contract",no:7, name:"Contract and terms",     blurb:"Contracts are created from the order only. Their approval depends on two risk checkboxes, not on margin."},
-  {id:"assets",  no:8, name:"Assets, amend, renew",   blurb:"What the customer owns after activation, and how changes and renewals start from it."},
+  {id:"propose", no:5, name:"Proposal document",      blurb:"Preview a draft proposal at any point, then generate the customer copy, titled Price Schedule, once the quote is approved."},
+  {id:"order",   no:6, name:"Order",                  blurb:"Turn an approved quote into an order. The order stays in Draft while its contract is created, and is activated once the contract is in place."},
+  {id:"contract",no:7, name:"Contract and terms",     blurb:"Contracts are created from the draft order as the last step before activation, and NDAs straight from the account. Terms approval depends on two risk flags, not on margin."},
+  {id:"assets",  no:8, name:"Assets, amend, renew",   blurb:"Activating the order creates the customer’s assets. Changes and renewals start from them."},
   {id:"admin",   no:9, name:"Catalog and access",     blurb:"Ops and Admin only: maintaining products and bundles, who can see and change what, and who approves.", ops:true}
 ];
 
@@ -312,7 +314,8 @@ var TESTS = [
 {id:"QT-1",stage:"quote",p:S,runAs:"Sales rep",title:"Create a quote from an opportunity",
  setup:"An open opportunity on a test account, for example Torrent Consulting TEST.",
  steps:["Open the opportunity and go to the <b>Quotes</b> related list.","Click <b>New Quote</b>, give it a name and an <b>Expiration Date</b>, then save."],
- expect:"The quote opens in <b>Draft</b>, linked to the opportunity and account. The Transaction Line Editor panel appears with no lines, and the margin summary is empty or zero."},
+ expect:"The quote opens in <b>Draft</b>, linked to the opportunity and account. The Transaction Line Editor panel appears with no lines, and the margin summary is empty or zero.",
+ watch:"Use <b>New Quote</b> in the Quotes related list. The <b>New Quote</b> button at the top of the opportunity creates a quote in the old CPQ system (numbered Q-…), which this process doesn’t use."},
 {id:"QT-2",stage:"quote",p:S,runAs:"Sales rep",title:"A new quote doesn’t replace the opportunity’s synced quote",
  setup:"An opportunity that already has a synced quote.",
  steps:["Create a second quote on the same opportunity and add a product to it with <b>Browse Catalog</b>.","Go back to the opportunity."],
@@ -321,32 +324,42 @@ var TESTS = [
 /* 2 config */
 {id:"CF-1",stage:"config",p:S,runAs:"Sales rep",key:true,title:"Add a program with Browse Catalog",
  steps:["On the quote, click <b>Browse Catalog</b>.","Pick a program, for example <b>Print Only Bundle</b>, and add it.","Open the program’s configuration (gear icon)."],
- expect:"The program is added with its packages nested beneath it. Required groups arrive already filled with their default products, so you aren't building from empty."},
+ expect:"The program is added with its packages nested beneath it. Required groups arrive already filled with their default products, including Letter Postage, so a print-only program can be priced without changing anything."},
 {id:"CF-2",stage:"config",p:S,runAs:"Sales rep",title:"Package defaults are preloaded and swappable",
  setup:"The program from CF-1.",
  steps:["Configure a print package, for example <b>8.5x11 Print Package</b>.","Look at the paper, envelope and imaging groups.","Swap the envelope for a different option and save."],
  expect:"Each of those groups starts with one default selected. Choosing another option replaces the default rather than adding a second one. A required group can't be saved empty."},
-{id:"CF-3",stage:"config",p:S,runAs:"Sales rep",key:true,title:"Choose postage: letter or postcard",
- steps:["In the print package’s <b>Postage</b> slot, select <b>P1 – Letter Presorted First Class Postage</b>. Use <b>P11 – Postcard</b> on a second run.","Save and look at the lines under the postage item."],
- expect:"Postage comes in as its own item with exactly two lines under it: the <b>P-code commingle rate</b> and the <b>USPS rate</b>. Both are required, can't be removed, and their quantity follows the postage item.",
- watch:"Only letter (P1) and postcard (P11) should be offered. That was the 29 September decision. If P2–P7 or P12–P13 appear, say so in your note."},
-{id:"CF-4",stage:"config",p:S,runAs:"Sales rep",title:"Print add-ons sit once at the program level",
- steps:["In the program configuration, find the <b>Print &amp; Mail Add-Ons</b> group.","Add an add-on, for example an additional page or a BRE."],
- expect:"Add-ons are chosen once for the program and aren't repeated inside each print package. The price doesn't depend on which print package you picked."},
-{id:"CF-5",stage:"config",p:S,runAs:"Sales rep",title:"More than one print package in a program",
- steps:["In the <b>Print &amp; Mail</b> group, select two different print packages, for example 8.5x11 and 8.5x14.","Save."],
- expect:"Both are accepted, up to eight different packages. You can't choose the same package twice in this group. CF-6 covers that case.",
- watch:"This group now uses checkboxes instead of the one-click swap. Say whether that's worse for reps."},
-{id:"CF-6",stage:"config",p:S,runAs:"Sales rep",explore:true,title:"The same package twice (proposed workaround)",
+{id:"CF-3",stage:"config",p:S,runAs:"Sales rep",key:true,title:"The package volume carries through to its contents",
+ setup:"The program from CF-1.",
+ steps:["Set the quantity on a print package to its estimated volume, for example 25,000, and save.","Look at the lines beneath the package."],
+ expect:"The envelope, paper, imaging and insertion lines, the postage item and both of its rates all take the same quantity and can’t be changed on their own. Package add-ons (CF-5) keep their own quantity and stay editable."},
+{id:"CF-4",stage:"config",p:S,runAs:"Sales rep",key:true,title:"Choose postage: letter or postcard",
+ steps:["In the print package’s <b>Postage</b> slot, check that <b>Letter Postage</b> is already selected. On a second run, choose <b>Postcard Postage</b> instead.","Open the postage item’s configuration."],
+ expect:"Postage is its own item with two lines: the <b>USPS rate</b>, which is fixed, and the <b>commingle rate</b>, which defaults to P1 for letters or P11 for postcards. Older P-codes can be picked in the commingle rate group, so a renewal on an existing code doesn’t need reconfiguring."},
+{id:"CF-5",stage:"config",p:S,runAs:"Sales rep",title:"Envelope and page add-ons sit inside the print package",
+ steps:["Configure a print package and open its <b>Package Add-Ons</b> group.","Add a reply envelope and an additional page, then save."],
+ expect:"Reply, left-window and right-window envelopes are offered on every print package. Additional pages (simplex or duplex) match the package size: 8.5x11 pages on 8.5x11 packages, 8.5x14 pages on 8.5x14 packages. Each add-on is priced and keeps its own quantity."},
+{id:"CF-6",stage:"config",p:S,runAs:"Sales rep",title:"Other print add-ons are chosen once for the program",
+ steps:["In the program configuration, find the <b>Print &amp; Mail Add-Ons</b> group.","Add an add-on, for example a BRE."],
+ expect:"These add-ons are chosen once for the whole program and aren't repeated inside each print package. The envelopes and additional pages from CF-5 aren't offered here."},
+{id:"CF-7",stage:"config",p:S,runAs:"Sales rep",title:"Minimum charges come with the program",
+ steps:["Add <b>Print Only Bundle</b> and open its <b>Minimums</b> group.","Repeat with <b>Print + Email Bundle</b> and one of the Omni-Channel programs."],
+ expect:"Each program arrives with its minimum charges selected: Print Only has the print minimum, Print + Email adds the eDelivery minimum, and the Omni-Channel programs add the text minimum as well. Other minimums can be added from the same group. None appear inside packages.",
+ watch:"Adding a channel to a program doesn’t select its minimum for you. Check the Minimums group before you price."},
+{id:"CF-8",stage:"config",p:S,runAs:"Sales rep",title:"Choose the DCR processing turnaround",
+ setup:"A program that includes the <b>Expresso Platform Package</b>.",
+ steps:["Configure the Expresso Platform Package and open its <b>Platform Processing</b> group."],
+ expect:"Five DCR Processing options are listed: 6AM (A1), 9AM (A2), Next Day (B1), 2nd Business Day (C1) and Scheduled (D1). 2nd Business Day is preselected. Each is priced at its own full rate, so a faster turnaround shows a higher price per record."},
+{id:"CF-9",stage:"config",p:S,runAs:"Sales rep",title:"A second print package goes outside the program",
  setup:"A quote whose program already contains, for example, the 8.5x11 Print Package.",
- steps:["Using <b>Browse Catalog</b>, add a second 8.5x11 Print Package directly at the top level of the quote, outside the program.","Configure it with different components and choose its postage."],
- expect:"It's added as a package in its own right, with defaults and a postage slot, and it prices normally. On the proposal it appears as a separate block in the Print section.",
- watch:"This is a proposed workaround, not a settled design. Accept means it would work for you. Reject means it wouldn't, so please tell us why."},
-{id:"CF-7",stage:"config",p:S,runAs:"Sales rep",title:"Describe what a package is for",
+ steps:["Using <b>Browse Catalog</b>, add a second print package directly at the top level of the quote, outside the program. It can be the same size or a different one.","Configure it with different components and choose its postage."],
+ expect:"It's added as a package in its own right, with defaults and a postage slot, and it prices normally. On the proposal it appears as a separate package block in the Print section.",
+ watch:"Selecting two print packages inside the same program shows <em>“Commingle Rate / USPS Rate for Letter Postage isn’t in the range 1-1”</em> and won’t save. That’s a platform limit raised with Salesforce, which is why the second package goes outside the program."},
+{id:"CF-10",stage:"config",p:S,runAs:"Sales rep",title:"Describe what a package is for",
  steps:["In the line editor, type a short description of how the customer will use the package in the <b>Description</b> column on a package line, for example “Monthly statements, 8.5x11 duplex”.","Save, then reload the page."],
- expect:"The note is still there after the reload, and it prints under that package on the proposal (DG-2)."},
-{id:"CF-8",stage:"config",p:S,runAs:"Sales rep",title:"Small prices show their real decimals",
- steps:["Look at per-piece lines such as the P-code rate or paper."],
+ expect:"The note is still there after the reload, and it prints in that package’s row on the proposal (DG-4)."},
+{id:"CF-11",stage:"config",p:S,runAs:"Sales rep",title:"Small prices show their real decimals",
+ steps:["Look at per-piece lines such as the commingle rate or paper."],
  expect:"Per-piece prices show up to four decimals, for example <b>$0.2649</b>. Whole-dollar prices show two. A line should only read $0.00 if it really is zero."},
 
 /* 3 price */
@@ -364,7 +377,7 @@ var TESTS = [
  expect:"The quote total drops by exactly $500, spread across the discountable lines. The per-line split may differ from earlier tests, but the header total must be exact."},
 {id:"PR-4",stage:"price",p:S,runAs:"Sales rep",key:true,title:"Postage and minimum charges aren’t discounted",
  setup:"The discounted quote from PR-2.",
- steps:["Check each postage line on its own: the P-code rate line <em>and</em> the USPS rate line.","Check any minimum run charge or minimum processing fee lines."],
+ steps:["Check each postage line on its own: the commingle rate line <em>and</em> the USPS rate line.","Check the lines in the program’s Minimums group."],
  expect:"None of these lines carries any discount. Postage is a pass-through cost, and minimums were agreed on 1 September to be fixed (“$25 is $25”).",
  watch:"Note which specific lines, if any, took a discount. We need the product names."},
 {id:"PR-5",stage:"price",p:S,runAs:"Sales rep",title:"Floors hold under a large discount",
@@ -418,80 +431,99 @@ var TESTS = [
  expect:"Record what happens. The documentation contradicts itself, so we need to see this with a real sales login. Accept if the result is what Nordis wants, and say in your note whether another rep should be able to recall."},
 
 /* 5 propose */
-{id:"DG-1",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Generate a proposal",
- setup:"A configured, repriced quote.",
- steps:["Click <b>Create Proposal</b> and choose the <b>Nordis_Proposal</b> template.","Preview the document, then save it."],
- expect:"A PDF is saved to the quote’s <b>Files</b>. Sections appear in this order, and only when the quote contains them: Platform License, DCR Processing, <b>PRINT &amp; MAIL DELIVERY</b> (Print, Mail Data Enrichment, Returned Mail), <b>DIGITAL DELIVERY</b> (Messaging, Email), ExpressoPay, HOA Vote, Implementation."},
-{id:"DG-2",stage:"propose",p:S,runAs:"Sales rep",title:"Each package reads correctly",
- steps:["In the proposal from DG-1, read one print package and one digital package."],
- expect:"The package row shows its headline rate: <b>price per piece</b> for mail, <b>price per send</b> for digital. The package description from CF-7 appears beneath it. Included components are indented and listed by name without prices. Optional add-ons appear once, in an <b>Optional Add-Ons</b> table with price and measure."},
-{id:"DG-3",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Nothing internal reaches the customer",
+{id:"DG-1",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Preview a draft proposal at any stage",
+ setup:"A quote in any status, for example Draft or Needs Review.",
+ steps:["Click <b>Preview Draft Proposal</b>.","Open the PDF from the preview."],
+ expect:"The PDF is produced without repricing first. Every page carries a DRAFT watermark and the red line <em>DRAFT · NOT FOR DISTRIBUTION · PENDING APPROVAL</em>. Apart from those markings, it shows the same content the approved version will."},
+{id:"DG-2",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Generate the customer proposal once approved",
+ setup:"An <b>Approved</b> quote, and a second quote still in Draft.",
+ steps:["On the Draft quote, check that <b>Create Proposal</b> isn’t offered.","On the approved quote, click <b>Create Proposal</b>, choose <b>Nordis_Proposal</b>, preview it and save."],
+ expect:"A PDF titled <b>Price Schedule</b>, with no watermark, is saved to the quote’s <b>Files</b>. Only the customer template is offered in the list."},
+{id:"DG-3",stage:"propose",p:S,runAs:"Sales rep",title:"Sections appear in the agreed order",
+ steps:["Read the proposal from DG-2 from top to bottom."],
+ expect:"Sections appear in this order, and only when the quote contains them: <b>EXPRESSO PLATFORM</b> (Platform License, DCR Processing), <b>PRINT &amp; MAIL DELIVERY</b> (print, mail tracking and returned mail packages), <b>DIGITAL DELIVERY</b> (email and text packages), ExpressoPay, HOA Vote, Minimums, Implementation. Sections with nothing in them are left out entirely."},
+{id:"DG-4",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Each package reads correctly",
+ setup:"A quote with a print package that has an add-on from CF-5, and a digital package.",
+ steps:["In the proposal, read the print package and the digital package."],
+ expect:"Each package is its own table with the columns <b>Package · Est. Volume · Unit Price · Measure</b>. The shaded package row shows the headline rate (<b>price per piece</b> for mail, <b>price per send</b> for digital), the package quantity exactly as entered, and the description from CF-10. Included items follow by name only, in the order envelope, paper, imaging, insertion. Package add-ons are priced rows inside the table, followed by a <b>Package subtotal</b> line. A package with no priced add-ons has no subtotal.",
+ watch:"An Est. Volume of 1 means the package quantity was never set (CF-3)."},
+{id:"DG-5",stage:"propose",p:S,runAs:"Sales rep",title:"Postage, add-ons and minimums each appear once",
+ steps:["Find postage, the add-ons and the minimum charges in the proposal."],
+ expect:"Postage is a single row (Letter Postage or Postcard Postage at its per-piece rate) straight after its print package, outside the package subtotal. The commingle and USPS lines don’t print. Program add-ons appear once in an <b>Add-Ons</b> table, and minimum charges once in the <b>Minimums</b> section."},
+{id:"DG-6",stage:"propose",p:S,runAs:"Sales rep",key:true,title:"Nothing internal reaches the customer",
  steps:["Read the whole proposal."],
  expect:"No cost, margin, floor or target figures appear anywhere. Prices shown match the quote after discounts."},
-{id:"DG-4",stage:"propose",p:S,runAs:"Sales rep",title:"Postage shows where the customer expects it",
- steps:["Find postage in the Print section."],
- expect:"Postage appears under the print package as the letter or postcard postage item, with the right rate.",
- watch:"How the USPS rate and P-code lines are displayed is still being settled with Nordis. Accept or reject on whether the numbers are right, and put any layout preference in your note."},
-{id:"DG-5",stage:"propose",p:S,runAs:"Sales rep",known:true,title:"Generating straight after configuring (known issue)",
- steps:["Configure a bundle and save.","Without repricing, click <b>Create Proposal</b>.","Then reprice and generate again."],
- expect:"Today the first document can come out with packages missing, and the second one after the reprice is correct. <b>Accept</b> if “always reprice before generating” is an acceptable working rule at go-live. <b>Reject</b> if it has to be fixed first."},
 
 /* 6 order */
 {id:"OR-1",stage:"order",p:SO,runAs:"Sales rep",key:true,title:"Create an order from an approved quote",
  setup:"A quote in <b>Approved</b> status.",
  steps:["Click <b>Create Order</b> on the quote."],
- expect:"An order is created, linked to the account and quote, with the same products, quantities and prices as the quote.",
+ expect:"An order is created in <b>Draft</b>, linked to the account and quote, with the same products, quantities and prices as the quote. <b>Create Contract</b> is the first action on the order.",
  watch:"If a banner says <em>“prices aren’t up to date or the validation isn’t complete”</em> and blocks the order, record the quote number. It's usually a one-time line with no start or end date."},
-{id:"OR-2",stage:"order",p:O,runAs:"Admin",key:true,title:"Activate the order and create assets",
- setup:"The order from OR-1.",
- steps:["Check that line start dates are filled in.","Activate the order."],
- expect:"The order status becomes <b>Activated</b>, and the account shows new assets that match the order lines.",
- watch:"If activation fails with an error mentioning CPQ (SBQQ) fields, that's the known conflict between CPQ and Revenue Cloud on orders. Copy the exact error."},
 
 /* 7 contract */
-{id:"CT-1",stage:"contract",p:O,runAs:"Admin",key:true,title:"Create the contract from the order",
- setup:"The activated order from OR-2.",
- steps:["On the order, click <b>New Contract</b>."],
- expect:"A contract is created in <b>Draft</b>, linked to the account and the order."},
-{id:"CT-2",stage:"contract",p:S,runAs:"Sales rep",title:"Quotes no longer offer Create Contract",
- steps:["Open any quote and look through its actions."],
- expect:"There's no <b>Create Contract</b> action on the quote. Contracts come from orders only, because the order and its assets are the record of what was sold."},
-{id:"CT-3",stage:"contract",p:SO,runAs:"Sales rep",key:true,title:"A standard contract approves itself",was:"C1",
- setup:"A Draft contract with <em>neither</em> risk box ticked. It doesn't need a document. Contracts 00000621 and 00000591 work if they are still in Draft.",
+{id:"CT-1",stage:"contract",p:SO,runAs:"Sales rep",key:true,title:"Create the contract from the order",
+ setup:"The Draft order from OR-1.",
+ steps:["On the order, click <b>Create Contract</b>.","Choose the sections the agreement needs: <b>MSA</b>, <b>SOW</b> and <b>Standard Terms and Conditions</b>, in any combination.","In the Statement of Work step, add a row for each package: name, Expresso Client ID, File Frequency and Input Type. Tick <b>Print / Mail</b>, <b>Email</b> and <b>Text</b> as they apply, then enter each channel’s monthly volume and the <b>Print SLA</b> (A1–D1) or <b>Text SLA</b> (A1–A2).","Complete the contract terms (term, renewal, liability, indemnification, payment terms, invoicing frequency, postage reconciliation) and finish."],
+ expect:"You land on a new contract in <b>Draft</b>, linked to the account, with the order as its source. <b>Contracted Packages</b> holds one row for each package you entered. Back on the order, <b>Contract Number</b> shows the new contract.",
+ watch:"Create the contract while the order is still in Draft: an activated order can’t take a contract number. The order also stays unlinked if the contract starts later than the order does."},
+{id:"CT-2",stage:"contract",p:S,runAs:"Sales rep",title:"Contracts start from the order only",
+ steps:["Open any quote and any opportunity and look through their actions."],
+ expect:"Neither offers <b>Create Contract</b>. Contracts come from orders only, because the order and its assets are the record of what was sold."},
+{id:"CT-3",stage:"contract",p:SO,runAs:"Sales rep",title:"A liability cap above $1,000,000 flags the contract",
+ steps:["Create a contract as in CT-1 with a limitation of liability above $1,000,000.","Create another with $1,000,000 or less."],
+ expect:"The first contract has <b>Liability Above Standard Cap</b> ticked in MSA Information, and the second doesn’t. That flag is what sends a contract to the COO (CT-7)."},
+{id:"CT-4",stage:"contract",p:SO,runAs:"Sales rep",key:true,title:"Generate the commercial agreement",
+ setup:"The contract from CT-1.",
+ steps:["Open the contract’s <b>Documents</b> tab.","Choose <b>Nordis Commercial Agreement</b> and generate it."],
+ expect:"The document holds the sections chosen in CT-1 and nothing else: the Expresso License Agreement (MSA), the Statement of Work, and the Standard Terms and Conditions on their own pages. The customer’s legal name, address, effective date, term, renewal, liability, indemnification, payment terms, invoicing and postage reconciliation are filled in. The Statement of Work table has one row per contracted package with its volumes, file frequency, input type and SLAs, followed by the print and text SLA tables and the signature page. No blank placeholders remain.",
+ watch:"The implementation fee ($15,000) and the ExpressoPay five-year term are fixed wording in this version, and the Pricing and Services Summary page doesn’t pull in the price schedule yet. Note anything else that should come from the contract."},
+{id:"CT-5",stage:"contract",p:SO,runAs:"Sales rep",key:true,title:"Create an NDA from the account",
+ setup:"An account with a billing address and at least one contact.",
+ steps:["On the account, click <b>Create NDA</b>.","Choose who signs for the customer and finish."],
+ expect:"You land on a new contract named <b>NDA - <em>account name</em></b>, type NDA, in Draft, starting today. The Nordis NDA document is attached, with the customer’s legal name (or the account name when no legal name is set) and billing address filled in.",
+ watch:"A blank address on the NDA means the account has no billing address. Add one, then generate the NDA again from the contract’s Documents tab."},
+{id:"CT-6",stage:"contract",p:SO,runAs:"Sales rep",key:true,title:"A standard contract approves itself",was:"C1",
+ setup:"A Draft contract with <em>neither</em> risk box ticked, for example one from CT-3 with a liability cap of $1,000,000 or less. It doesn't need a document.",
  steps:["Click <b>Submit for Review</b>."],
  expect:"The message says no sign-off is needed, and the contract goes to <b>Approved</b> without anyone being asked.",
  watch:"Run this first. If the contract sits in <b>In Approval Process</b> and never moves, stop and tell us, because it means standard contracts are getting stuck."},
-{id:"CT-4",stage:"contract",p:SO,runAs:"Sales rep submits; COO approves",title:"Liability above the cap goes to the COO",was:"C2",
- setup:"Tick <b>Liability Above Standard Cap</b> only, in the MSA Information section.",
+{id:"CT-7",stage:"contract",p:SO,runAs:"Sales rep submits; COO approves",title:"Liability above the cap goes to the COO",was:"C2",
+ setup:"A contract with <b>Liability Above Standard Cap</b> ticked and nothing else: the flagged contract from CT-3, or one ticked by hand in MSA Information.",
  steps:["Submit, then have the COO approve."],
  expect:"Only the COO is asked. The status becomes <b>Approved</b>, and their comments appear in <b>Approval Comments</b>."},
-{id:"CT-5",stage:"contract",p:SO,runAs:"Sales rep submits; COO, then Legal approve",key:true,title:"Non-standard language needs COO and Legal",was:"C3",
+{id:"CT-8",stage:"contract",p:SO,runAs:"Sales rep submits; COO, then Legal approve",key:true,title:"Non-standard language needs COO and Legal",was:"C3",
  setup:"Tick <b>Non-Standard Terms</b> only and describe the change in <b>Non-Standard Terms Detail</b>.",
  steps:["Submit. The COO and Legal each receive a request.","The COO approves first. <b>Stop and look at the contract.</b>","Then Legal approves."],
  expect:"After the COO alone, the contract is <b>still In Approval Process</b>. It reaches <b>Approved</b> only after Legal approves too, and both comments are stored with each approver's role.",
  watch:"Also confirm that the Legal approver can open and act on the request. Their access comes from contract-management permission sets rather than their Read Only profile."},
-{id:"CT-6",stage:"contract",p:SO,runAs:"Sales rep submits; COO and Legal approve",title:"Both boxes behave like non-standard alone",was:"C4",
+{id:"CT-9",stage:"contract",p:SO,runAs:"Sales rep submits; COO and Legal approve",title:"Both boxes behave like non-standard alone",was:"C4",
  setup:"Tick <b>both</b> risk boxes.",
  steps:["Submit and read the message."],
  expect:"The COO and Legal are asked, with no third approver. The message and the <b>Approval Stage Reason</b> field mention both reasons."},
-{id:"CT-7",stage:"contract",p:SO,runAs:"Sales rep submits; COO rejects",key:true,title:"Rejection sends the contract back for revision",was:"C5",
+{id:"CT-10",stage:"contract",p:SO,runAs:"Sales rep submits; COO rejects",key:true,title:"Rejection sends the contract back for revision",was:"C5",
  steps:["Submit a contract with either box ticked.","The COO rejects it with a reason."],
  expect:"The status becomes <b>Rejected</b>, the reason appears in <b>Approval Comments</b>, and <b>Submit for Review</b> is available again for a fresh approval.",
  watch:"With non-standard terms ticked, have one approver reject before the other responds. The contract should go to Rejected straight away, and the other request should disappear. If the contract has a generated document, that document is not returned to draft automatically. That change is deliberate."},
-{id:"CT-8",stage:"contract",p:SO,runAs:"Sales rep",title:"The submitter can recall a contract",was:"C6",
+{id:"CT-11",stage:"contract",p:SO,runAs:"Sales rep",title:"The submitter can recall a contract",was:"C6",
  steps:["Submit a flagged contract.","Before anyone responds, click <b>Recall Approval</b> and give a reason."],
  expect:"The request is withdrawn, and the contract returns to <b>Needs Review</b>."},
 
 /* 8 assets */
-{id:"AS-1",stage:"assets",p:SO,runAs:"Sales rep",title:"Assets show what the customer owns",
- setup:"The account from OR-2.",
+{id:"AS-1",stage:"assets",p:O,runAs:"Admin",key:true,title:"Activate the order and create assets",
+ setup:"The order from OR-1, with its contract created in CT-1.",
+ steps:["Check that line start dates are filled in.","Activate the order."],
+ expect:"The order status becomes <b>Activated</b>, it still shows its contract in Contract Number, and the account shows new assets that match the order lines.",
+ watch:"If activation fails with an error mentioning CPQ (SBQQ) fields, that's the known conflict between CPQ and Revenue Cloud on orders. Copy the exact error."},
+{id:"AS-2",stage:"assets",p:SO,runAs:"Sales rep",title:"Assets show what the customer owns",
+ setup:"The account from AS-1.",
  steps:["Open the account’s assets, or the asset viewer on the contract page."],
  expect:"There is one asset per product sold, with the right quantity, price, and start and end dates."},
-{id:"AS-2",stage:"assets",p:SO,runAs:"Admin",key:true,title:"Renew from the contract",
- setup:"The contract created from a new order in CT-1.",
+{id:"AS-3",stage:"assets",p:SO,runAs:"Admin",key:true,title:"Renew from the contract",
+ setup:"The contract from CT-1, once its order has been activated in AS-1.",
  steps:["In the contract’s asset viewer, select the assets and click <b>Renew</b>."],
  expect:"A renewal quote is created in Draft with the renewing lines on a one-year term, ready to price and send through approval like any other quote."},
-{id:"AS-3",stage:"assets",p:SO,runAs:"Admin",title:"Amend a live asset",
+{id:"AS-4",stage:"assets",p:SO,runAs:"Admin",title:"Amend a live asset",
  steps:["In the asset viewer, select an asset and click <b>Amend</b>.","Change the quantity and save."],
  expect:"An amendment quote is created showing the change against what's already contracted, not a fresh copy of the whole deal."},
 
@@ -509,7 +541,7 @@ var TESTS = [
 {id:"AD-4",stage:"admin",p:O,runAs:"Admin",key:true,title:"Add or change a product and see it in quoting",
  steps:["Create or edit a 2026 product: price book entry, selling model, <b>Package Family</b>, <b>Price Measure</b>, <b>Usage Based</b> and <b>Discount Disallowed</b>.","Add it to a package’s component group.","Run <b>Refresh Decision Tables</b>, <b>Sync Pricing Data</b> and a <b>Full Product Index Rebuild</b>.","Add the package to a new quote with <b>Browse Catalog</b> and generate a proposal."],
  expect:"The product appears in the right group in the configurator and prices correctly. On the proposal it's in the right section with the right measure.",
- watch:"New bundles and components don't show in the configurator until the index rebuild has finished. That's the step people usually miss."},
+ watch:"A new product shows in the configurator without a price until the decision tables are refreshed, and new bundles and components don't show at all until the index rebuild has finished. Those are the steps people usually miss."},
 {id:"AD-5",stage:"admin",p:O,runAs:"Admin",title:"Price measures match how Nordis sells",
  steps:["Spot-check the <b>Price Measure</b> on ten products across families (per piece, per send, per record, per month and so on)."],
  expect:"Each measure matches how the product is sold. The measure is what the proposal prints beside the price.",
@@ -523,13 +555,17 @@ var TESTS = [
 {id:"AD-8",stage:"admin",p:O,runAs:"Admin",title:"The approvers are the right people",
  steps:["Review the user assigned to each approver role: CRO, CFO, COO and Legal."],
  expect:"Each role is assigned to the right person at Nordis. Before production, the approver logins are switched from sandbox users to production users.",
- watch:"Nordis still needs to supply the COO's definition of the standard liability cap, which the Liability checkbox depends on."},
+ watch:"Create Contract treats a liability cap above $1,000,000 as above standard (CT-3). Confirm that's Nordis's figure."},
 {id:"AD-9",stage:"admin",p:O,runAs:"Admin",title:"You can see where every approval stands",
  steps:["On a quote under approval, check the Approval History.","On a contract under approval, open the <b>Approvals</b> tab (between Documents and Assets)."],
  expect:"Both show who has been asked, who has responded, their decisions and comments."},
-{id:"AD-10",stage:"admin",p:O,runAs:"Admin",title:"The catalog matches the 17 September sheet",
- steps:["Pick ten rows from <code>2026_NordisProductCatalog 9.17.xlsx</code> and find each product in Salesforce."],
- expect:"Product names and PS codes (<b>Product Code</b>) match the sheet exactly."}
+{id:"AD-10",stage:"admin",p:O,runAs:"Admin",title:"The catalog matches the latest catalog sheet",
+ steps:["Pick ten rows from the latest Nordis catalog sheet and find each product in Salesforce."],
+ expect:"Product names and PS codes (<b>Product Code</b>) match the sheet exactly."},
+{id:"AD-11",stage:"admin",p:O,runAs:"Admin",title:"Keep a contract’s package table up to date",
+ setup:"The contract from CT-1.",
+ steps:["In <b>Contracted Packages</b>, edit a row: change a volume and the Print SLA.","Add a new row for another package.","Generate the agreement again (CT-4)."],
+ expect:"Both changes save, and the regenerated Statement of Work table shows the edited row and the new one."}
 ];
 
 /* ---------- config ---------- */
@@ -708,9 +744,10 @@ function overall(id){
   Object.keys(all).forEach(function(uid){ var e = all[uid] && all[uid][id]; if (!e || !e.status) return; if (e.status === "rejected") st = "rejected"; else if (st !== "rejected") st = "accepted"; });
   return st;
 }
+function myState(id){ var e = mine[id]; return e && e.status ? e.status : "open"; }
 function visible(t){
   if (filters.persona !== "all" && t.p.indexOf(filters.persona) < 0) return false;
-  if (filters.status !== "all" && overall(t.id) !== filters.status) return false;
+  if (filters.status !== "all" && myState(t.id) !== filters.status) return false;
   return true;
 }
 function personaMatch(t){ return filters.persona === "all" || t.p.indexOf(filters.persona) >= 0; }
@@ -719,7 +756,7 @@ var renderSeq = 0;
 function refresh(){
   var tot=0, a=0, r=0;
   TESTS.forEach(function(t){
-    var ref = cards[t.id], st = overall(t.id);
+    var ref = cards[t.id], st = myState(t.id);
     ref.card.dataset.state = st;
     ref.card.hidden = !visible(t);
     if (personaMatch(t)) { tot++; if (st==="accepted") a++; else if (st==="rejected") r++; }
@@ -739,7 +776,7 @@ function refresh(){
 
   STAGES.forEach(function(st){
     var ts = TESTS.filter(function(t){ return t.stage === st.id && personaMatch(t); });
-    var sa = 0, sr = 0; ts.forEach(function(t){ var s = overall(t.id); if (s==="accepted") sa++; else if (s==="rejected") sr++; });
+    var sa = 0, sr = 0; ts.forEach(function(t){ var s = myState(t.id); if (s==="accepted") sa++; else if (s==="rejected") sr++; });
     var li = st.jEl.parentNode; li.hidden = ts.length === 0;
     st.jEl.querySelector(".mini .a").style.width = (ts.length ? sa/ts.length*100 : 0) + "%";
     st.jEl.querySelector(".mini .r").style.width = (ts.length ? sr/ts.length*100 : 0) + "%";
@@ -759,6 +796,7 @@ function renderOthers(){
     var box = cards[t.id].others; box.textContent = "";
     ids.forEach(function(u){
       var e = all[u] && all[u][t.id]; if (!e || (!e.status && !e.note && !e.record)) return;
+      if (!box.firstChild) { var hd = el("div","others-h"); hd.textContent = "Other testers"; box.appendChild(hd); }
       var row = el("div","other");
       var av = el("span","av"); av.textContent = initials(names[u]); row.appendChild(av);
       var who = el("div","who");
